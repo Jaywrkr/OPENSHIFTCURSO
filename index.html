@@ -4,1371 +4,1123 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Terminal OpenShift — Manifiesto de carga</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --ink:#0E1A24;
-    --panel:#15262F;
-    --panel-light:#1E323C;
-    --panel-line:#2B414C;
-    --paper:#F2EFE6;
-    --paper-line:#DCD5C2;
-    --paper-soft:#6E6552;
-    --red:#E8453C;
-    --red-dim:#7A2A26;
-    --blue:#3FA7D6;
-    --blue-dim:#1F4A5C;
-    --amber:#F2B134;
-    --green:#4FAE82;
-    --ink-soft:#9FB3BE;
-    --ink-faint:#5C7480;
-    --radius:14px;
-    --maxw:1080px;
-    font-size:16px;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--ink);
-    color:var(--ink-soft);
-    font-family:'IBM Plex Sans', sans-serif;
-    line-height:1.55;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3,h4{
-    font-family:'Big Shoulders Display', sans-serif;
-    color:var(--paper);
-    letter-spacing:0.01em;
-    margin:0;
-    text-transform:uppercase;
-  }
-  p{margin:0 0 14px 0;}
-  a{color:var(--blue);}
-  code, .mono{font-family:'IBM Plex Mono', monospace;}
-  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+:root{
+  --ink:#0E1A24; --panel:#15262F; --panel-light:#1E323C; --panel-line:#2B414C;
+  --paper:#F2EFE6; --paper-line:#DCD5C2; --paper-soft:#6E6552;
+  --red:#E8453C; --red-dim:#7A2A26; --blue:#3FA7D6; --blue-dim:#1F4A5C;
+  --amber:#F2B134; --green:#4FAE82; --ink-soft:#9FB3BE; --ink-faint:#5C7480;
+  --radius:14px; --nav-h:58px; --maxw:1180px;
+  font-size:16px;
+}
+*{box-sizing:border-box;} html{scroll-behavior:smooth;}
+body{margin:0;background:var(--ink);color:var(--ink-soft);font-family:'IBM Plex Sans',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow:hidden;}
+h1,h2,h3,h4{font-family:'Big Shoulders Display',sans-serif;color:var(--paper);letter-spacing:.01em;margin:0;text-transform:uppercase;}
+p{margin:0 0 14px 0;} a{color:var(--blue);} code,.mono{font-family:'IBM Plex Mono',monospace;}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 36px;}
+@media(max-width:760px){.wrap{padding:0 18px;}}
 
-  /* ---------- TOP BAR ---------- */
-  .topbar{
-    position:sticky; top:0; z-index:50;
-    background:rgba(14,26,36,0.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--panel-line);
-  }
-  .topbar-inner{
-    max-width:var(--maxw); margin:0 auto; padding:12px 24px;
-    display:flex; align-items:center; justify-content:space-between; gap:16px;
-  }
-  .brand{display:flex; align-items:baseline; gap:10px;}
-  .brand-mark{
-    font-family:'Big Shoulders Display', sans-serif; font-weight:900;
-    font-size:20px; color:var(--paper); letter-spacing:0.02em;
-  }
-  .brand-sub{font-size:11px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.08em; display:none;}
-  @media(min-width:640px){.brand-sub{display:inline;}}
-  .menu-btn{
-    background:var(--panel-light); border:1px solid var(--panel-line); color:var(--paper);
-    font-family:'IBM Plex Mono', monospace; font-size:13px; letter-spacing:0.04em;
-    padding:9px 14px; border-radius:8px; cursor:pointer;
-  }
-  .menu-btn:hover{border-color:var(--blue);}
+/* ── HEADER: one bar, three zones ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:60;height:var(--nav-h);background:rgba(14,26,36,.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--panel-line);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:0 16px;}
+.brand-mark{font-family:'Big Shoulders Display',sans-serif;font-weight:900;font-size:18px;color:var(--paper);letter-spacing:.02em;white-space:nowrap;}
+.brand-full{display:inline;}
+@media(max-width:680px){.brand-full{display:none;}}
+.hdr-nav{display:flex;align-items:center;justify-content:center;gap:10px;min-width:0;}
+.topbar-right{display:flex;align-items:center;gap:12px;justify-self:end;}
+.tb-btn{background:var(--panel-light);border:1px solid var(--panel-line);color:var(--paper);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;padding:8px 12px;border-radius:8px;cursor:pointer;white-space:nowrap;}
+.tb-btn:hover{border-color:var(--blue);}
+.sn-arrow{width:32px;height:32px;border-radius:8px;border:1px solid var(--panel-line);background:var(--panel-light);color:var(--paper);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;flex:none;}
+.sn-arrow:disabled{opacity:.3;cursor:default;}
+.sn-arrow:not(:disabled):hover{border-color:var(--blue);}
+.sn-center{min-width:0;text-align:center;line-height:1.2;}
+.sn-tag{display:block;font-family:'IBM Plex Mono';font-size:10px;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;}
+.sn-title{display:block;font-family:'Big Shoulders Display';font-size:15px;color:var(--paper);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:50vw;}
+@media(max-width:560px){.sn-title{max-width:38vw;font-size:13px;} .sn-tag{display:none;}}
+.sn-count{font-family:'IBM Plex Mono';font-size:11px;color:var(--ink-faint);white-space:nowrap;}
+@media(max-width:480px){.sn-count{display:none;}}
+.progress-wrap{position:fixed;top:var(--nav-h);left:0;right:0;z-index:58;height:3px;background:var(--panel-line);}
+.progress-fill{height:100%;background:var(--red);transition:width .38s ease;}
 
-  /* ---------- INDEX OVERLAY ---------- */
-  .index-overlay{
-    position:fixed; inset:0; background:rgba(8,14,19,0.96); z-index:100;
-    display:none; overflow-y:auto; padding:32px 24px 60px;
-  }
-  .index-overlay.open{display:block;}
-  .index-head{display:flex; justify-content:space-between; align-items:center; max-width:var(--maxw); margin:0 auto 28px;}
-  .index-close{background:none; border:1px solid var(--panel-line); color:var(--paper); width:38px; height:38px; border-radius:50%; cursor:pointer; font-size:18px;}
-  .index-list{max-width:var(--maxw); margin:0 auto; list-style:none; padding:0; display:grid; gap:2px;}
-  .index-list a{
-    display:flex; gap:16px; align-items:baseline; text-decoration:none; color:var(--paper);
-    padding:14px 8px; border-bottom:1px solid var(--panel-line);
-  }
-  .index-list a:hover{color:var(--amber);}
-  .index-num{font-family:'IBM Plex Mono'; color:var(--ink-faint); font-size:14px; min-width:34px;}
-  .index-label{font-family:'Big Shoulders Display'; font-size:20px; text-transform:uppercase;}
+/* ── SLIDER ── */
+.viewport{position:fixed;top:calc(var(--nav-h) + 3px);left:0;right:0;bottom:0;overflow:hidden;}
+.track{display:flex;height:100%;transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform;}
+.slide{min-width:100vw;height:100%;overflow-y:auto;padding:26px 0 70px;}
+.slide::-webkit-scrollbar{width:4px;} .slide::-webkit-scrollbar-thumb{background:var(--panel-line);}
 
-  /* ---------- HERO ---------- */
-  .hero{padding:56px 0 40px; border-bottom:1px solid var(--panel-line);}
-  .hero-eyebrow{
-    display:inline-flex; gap:8px; align-items:center; font-family:'IBM Plex Mono'; font-size:12px;
-    color:var(--amber); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:18px;
-  }
-  .hero-eyebrow::before{content:"▣"; color:var(--red);}
-  .hero h1{font-size:clamp(36px,7vw,64px); line-height:1.02; max-width:780px;}
-  .hero h1 span{color:var(--red);}
-  .hero-lede{font-size:17px; color:var(--ink-soft); max-width:620px; margin-top:18px;}
-  .hero-note{
-    margin-top:22px; font-size:14px; color:var(--ink-faint); border-left:3px solid var(--blue);
-    padding-left:14px;
-  }
+/* ── COMMON COMPONENTS ── */
+.chapter-tag{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.chapter-id{font-family:'IBM Plex Mono';font-size:12px;color:var(--ink);background:var(--amber);padding:4px 10px;border-radius:5px;font-weight:600;letter-spacing:.05em;}
+.chapter-kicker{font-family:'IBM Plex Mono';font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.1em;}
+h2{font-size:clamp(24px,4vw,40px);margin-bottom:14px;}
+.lede{font-size:15px;max-width:660px;color:var(--ink-soft);margin-bottom:24px;}
+.analogy{background:var(--panel);border-left:3px solid var(--amber);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;margin:18px 0;font-size:14px;max-width:700px;}
+.analogy b{color:var(--amber);font-family:'IBM Plex Mono';font-size:10px;text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:5px;}
+.callout{border:1px dashed var(--green);border-radius:10px;padding:14px 18px;margin:18px 0;font-size:14px;background:rgba(79,174,130,.06);max-width:700px;}
+.callout b{color:var(--green);}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+@media(max-width:640px){.grid2,.grid3{grid-template-columns:1fr;}}
+.card{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:18px;}
+.card h4{font-size:17px;margin-bottom:8px;}
+.card p{font-size:13px;margin-bottom:0;color:var(--ink-soft);}
+.stat-num{font-family:'Big Shoulders Display';font-size:44px;color:var(--red);line-height:1;}
+.stat-label{font-size:13px;color:var(--ink-faint);margin-top:3px;}
+.chip{display:inline-flex;align-items:center;gap:5px;font-family:'IBM Plex Mono';font-size:11px;padding:5px 11px;border-radius:20px;border:1px solid var(--panel-line);background:var(--panel-light);color:var(--ink-soft);cursor:pointer;margin:0 5px 7px 0;}
+.chip.selected{background:var(--red-dim);border-color:var(--red);color:var(--paper);}
 
-  /* hero toggle widget */
-  .hero-widget{margin-top:34px; background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius); padding:22px;}
-  .hw-top{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;}
-  .hw-btn{
-    flex:1; min-width:160px; padding:12px 16px; border-radius:9px; border:1px solid var(--panel-line);
-    background:var(--panel-light); color:var(--ink-soft); font-family:'IBM Plex Mono'; font-size:13px; cursor:pointer;
-    text-align:left;
-  }
-  .hw-btn b{display:block; color:var(--paper); font-family:'Big Shoulders Display'; font-size:17px; text-transform:uppercase;}
-  .hw-btn.active{border-color:var(--red); background:var(--red-dim); color:var(--paper);}
-  .hw-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:8px;}
-  .hw-item{
-    font-size:13px; padding:9px 12px; border-radius:7px; background:var(--ink); border:1px solid var(--panel-line);
-    display:flex; gap:8px; align-items:center; color:var(--ink-faint);
-  }
-  .hw-item .dot{width:8px; height:8px; border-radius:50%; background:var(--panel-line); flex:none;}
-  .hw-item.on{color:var(--paper); border-color:var(--green);}
-  .hw-item.on .dot{background:var(--green);}
+/* info-term tooltip */
+.info-term{border-bottom:1px dotted var(--ink-faint);cursor:help;}
+.info-term::after{content:" ⓘ";font-size:.72em;color:var(--blue);}
+.hw-item .info-term{border-bottom-color:rgba(255,255,255,.3);}
+.global-tooltip{position:fixed;display:none;max-width:270px;background:var(--paper);color:var(--ink);border:1px solid var(--paper-line);border-radius:8px;padding:12px 15px;font-size:13px;line-height:1.5;z-index:400;box-shadow:0 10px 28px rgba(0,0,0,.5);}
 
-  /* ---------- CHAPTERS ---------- */
-  .chapter{padding:64px 0; border-bottom:1px solid var(--panel-line);}
-  .chapter:nth-child(even){background:rgba(255,255,255,0.012);}
-  .chapter-tag{
-    display:flex; align-items:center; gap:14px; margin-bottom:18px;
-  }
-  .chapter-id{
-    font-family:'IBM Plex Mono'; font-size:13px; color:var(--ink); background:var(--amber);
-    padding:4px 10px; border-radius:5px; font-weight:600; letter-spacing:0.05em;
-  }
-  .chapter-kicker{font-family:'IBM Plex Mono'; font-size:12px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:0.1em;}
-  .chapter h2{font-size:clamp(26px,4.4vw,42px); margin-bottom:16px;}
-  .chapter-lede{font-size:16px; max-width:680px; color:var(--ink-soft); margin-bottom:28px;}
-  .analogy{
-    background:var(--panel); border-left:3px solid var(--amber); border-radius:0 var(--radius) var(--radius) 0;
-    padding:16px 20px; margin:20px 0 28px; font-size:15px; max-width:680px;
-  }
-  .analogy b{color:var(--amber); font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; display:block; margin-bottom:6px;}
+/* hero widget */
+.hero-widget{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:20px;margin-top:24px;}
+.hw-top{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.hw-btn{flex:1;min-width:150px;padding:11px 14px;border-radius:9px;border:1px solid var(--panel-line);background:var(--panel-light);color:var(--ink-soft);cursor:pointer;text-align:left;}
+.hw-btn b{display:block;color:var(--paper);font-family:'Big Shoulders Display';font-size:16px;text-transform:uppercase;}
+.hw-btn.active{border-color:var(--red);background:var(--red-dim);color:var(--paper);}
+.hw-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px;}
+.hw-item{font-size:13px;padding:8px 11px;border-radius:7px;background:var(--ink);border:1px solid var(--panel-line);display:flex;gap:7px;align-items:center;color:var(--ink-faint);}
+.hw-item .dot{width:7px;height:7px;border-radius:50%;background:var(--panel-line);flex:none;}
+.hw-item.on{color:var(--paper);border-color:var(--green);}
+.hw-item.on .dot{background:var(--green);}
 
-  /* generic card grid */
-  .grid2{display:grid; grid-template-columns:1fr; gap:14px;}
-  @media(min-width:760px){.grid2{grid-template-columns:1fr 1fr;}}
-  .grid3{display:grid; grid-template-columns:1fr; gap:14px;}
-  @media(min-width:760px){.grid3{grid-template-columns:1fr 1fr 1fr;}}
-  .card{
-    background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius); padding:20px;
-  }
-  .card h4{font-size:18px; margin-bottom:8px; color:var(--paper);}
-  .card p{font-size:14px; margin-bottom:0; color:var(--ink-soft);}
-  .stat-num{font-family:'Big Shoulders Display'; font-size:46px; color:var(--red); line-height:1;}
-  .stat-label{font-size:13px; color:var(--ink-faint); margin-top:4px;}
+/* accordion generic */
+.acc{border:1px solid var(--panel-line);border-radius:10px;margin-bottom:9px;overflow:hidden;background:var(--panel);}
+.acc-h{display:flex;justify-content:space-between;align-items:center;padding:13px 17px;cursor:pointer;}
+.acc-h h4{font-size:15px;margin:0;color:var(--paper);}
+.acc-h .arr{font-family:'IBM Plex Mono';color:var(--ink-faint);font-size:16px;}
+.acc-b{display:none;padding:4px 17px 17px;font-size:14px;color:var(--ink-soft);}
+.acc.open .acc-b{display:block;} .acc.open .acc-h{border-bottom:1px solid var(--panel-line);} .acc.open .acc-h .arr{color:var(--amber);}
 
-  /* chips / pills */
-  .chip{
-    display:inline-flex; align-items:center; gap:6px; font-family:'IBM Plex Mono'; font-size:12px;
-    padding:6px 12px; border-radius:20px; border:1px solid var(--panel-line); background:var(--panel-light);
-    color:var(--ink-soft); cursor:pointer; margin:0 6px 8px 0; user-select:none;
-  }
-  .chip:hover{border-color:var(--blue);}
-  .chip.selected{background:var(--red-dim); border-color:var(--red); color:var(--paper);}
-  .chip.good{background:#1c3a2c; border-color:var(--green); color:var(--paper);}
+/* QA cases */
+.qa-case{border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:9px 13px;margin-top:11px;background:var(--panel-light);}
+.qa-case .client-label{font-family:'IBM Plex Mono';font-size:10px;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;}
+.qa-reply{font-size:13px;color:var(--ink-soft);margin-top:6px;}
 
-  /* accordion */
-  .acc-item{border:1px solid var(--panel-line); border-radius:10px; margin-bottom:10px; overflow:hidden; background:var(--panel);}
-  .acc-head{
-    display:flex; justify-content:space-between; align-items:center; padding:14px 18px; cursor:pointer;
-  }
-  .acc-head h4{font-size:16px; margin:0;}
-  .acc-head span{font-family:'IBM Plex Mono'; color:var(--ink-faint);}
-  .acc-body{display:none; padding:0 18px 18px; font-size:14px; color:var(--ink-soft);}
-  .acc-item.open .acc-body{display:block;}
-  .acc-item.open .acc-head{border-bottom:1px solid var(--panel-line);}
-  .acc-item.open .acc-head span{color:var(--amber);}
+/* ladder */
+.ladder{display:grid;gap:7px;}
+.rung{border:1px solid var(--panel-line);border-radius:10px;overflow:hidden;background:var(--panel);}
+.rung-h{display:flex;justify-content:space-between;align-items:center;padding:13px 17px;cursor:pointer;}
+.rung-h h4{font-size:15px;color:var(--paper);margin:0;}
+.rung-badge{font-family:'IBM Plex Mono';font-size:11px;color:var(--ink-faint);}
+.rung-b{display:none;padding:4px 17px 17px;} .rung.open .rung-b{display:block;} .rung.open .rung-h{border-bottom:1px solid var(--panel-line);}
+.rung-b ul{margin:0;padding-left:18px;} .rung-b li{font-size:13px;color:var(--ink-soft);margin-bottom:6px;}
+.rung-b li.sep{list-style:none;margin-left:-18px;color:var(--ink-faint);font-style:italic;margin-top:8px;font-size:12px;}
 
-  /* tables */
-  table.cmp{width:100%; border-collapse:collapse; font-size:14px; margin-top:8px;}
-  table.cmp th, table.cmp td{padding:12px 14px; border-bottom:1px solid var(--panel-line); text-align:left; vertical-align:top;}
-  table.cmp th{font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint);}
-  table.cmp tr:hover td{background:var(--panel-light);}
-  table.cmp .tag{font-family:'IBM Plex Mono'; color:var(--paper); font-weight:600;}
+/* table */
+table.cmp{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px;}
+table.cmp th,table.cmp td{padding:11px 13px;border-bottom:1px solid var(--panel-line);text-align:left;vertical-align:top;}
+table.cmp th{font-family:'IBM Plex Mono';font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);}
+table.cmp tr:hover td{background:var(--panel-light);}
+.tag{font-family:'IBM Plex Mono';color:var(--paper);font-weight:600;}
 
-  /* filter buttons */
-  .filterbar{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;}
-  .filter-btn{
-    padding:8px 16px; border-radius:8px; border:1px solid var(--panel-line); background:var(--panel);
-    color:var(--ink-soft); font-family:'IBM Plex Mono'; font-size:12px; cursor:pointer;
-  }
-  .filter-btn.active{background:var(--blue-dim); border-color:var(--blue); color:var(--paper);}
-  .hide{display:none !important;}
+/* filter bar */
+.filterbar{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+.fb{padding:7px 14px;border-radius:8px;border:1px solid var(--panel-line);background:var(--panel);color:var(--ink-soft);font-family:'IBM Plex Mono';font-size:11px;cursor:pointer;}
+.fb.active{background:var(--blue-dim);border-color:var(--blue);color:var(--paper);}
 
-  /* ladder */
-  .ladder{display:grid; gap:8px;}
-  .ladder-tier{
-    border:1px solid var(--panel-line); border-radius:10px; padding:14px 18px; cursor:pointer; background:var(--panel);
-    transition:background .15s;
-  }
-  .ladder-tier:hover{border-color:var(--blue);}
-  .ladder-tier.active{background:var(--red-dim); border-color:var(--red);}
-  .ladder-tier .lt-head{display:flex; justify-content:space-between; align-items:center;}
-  .ladder-tier h4{font-size:16px; color:var(--paper); margin:0;}
-  .ladder-tier .lt-badge{font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-faint);}
-  .ladder-detail{margin-top:14px; font-size:13px; color:var(--ink-soft); display:none;}
-  .ladder-tier.active .ladder-detail{display:block;}
-  .ladder-detail ul{margin:0; padding-left:18px;}
-  .ladder-detail li.sep{list-style:none; margin-left:-18px; color:var(--ink-faint); font-style:italic; margin-top:6px;}
+/* quad */
+.quad-wrap{display:grid;grid-template-columns:1fr 1fr;gap:9px;max-width:460px;margin:0 auto 14px;}
+.quad{aspect-ratio:1.35;border:1px solid var(--panel-line);border-radius:10px;background:var(--panel);display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;cursor:pointer;font-size:12px;}
+.quad:hover{border-color:var(--blue);} .quad.active{background:var(--red-dim);border-color:var(--red);color:var(--paper);}
+.quad-detail{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:16px;font-size:13px;max-width:460px;margin:0 auto;}
 
-  /* quadrant */
-  .quad-wrap{display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:480px; margin:0 auto 18px;}
-  .quad{
-    aspect-ratio:1.4; border:1px solid var(--panel-line); border-radius:10px; background:var(--panel);
-    display:flex; align-items:center; justify-content:center; text-align:center; padding:14px; cursor:pointer; font-size:13px;
-  }
-  .quad:hover{border-color:var(--blue);}
-  .quad.active{background:var(--red-dim); border-color:var(--red); color:var(--paper);}
-  .quad-axis{text-align:center; font-family:'IBM Plex Mono'; font-size:11px; color:var(--ink-faint); text-transform:uppercase;}
-  .quad-detail{
-    background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius); padding:18px; font-size:14px; max-width:480px; margin:0 auto;
-  }
+/* infra pick */
+.pick{border:1px solid var(--panel-line);border-radius:var(--radius);padding:16px;cursor:pointer;background:var(--panel);}
+.pick.active{border-color:var(--amber);background:var(--panel-light);}
+.pick .pe{font-family:'IBM Plex Mono';font-size:10px;color:var(--blue);text-transform:uppercase;margin-bottom:7px;display:block;}
+.pick h4{font-size:16px;margin-bottom:5px;}
+.pick p{font-size:12px;color:var(--ink-soft);margin:0;}
 
-  /* infra cards select */
-  .pick-card{
-    border:1px solid var(--panel-line); border-radius:var(--radius); padding:18px; cursor:pointer; background:var(--panel);
-  }
-  .pick-card.active{border-color:var(--amber); background:var(--panel-light);}
-  .pick-card h4{font-size:17px; margin-bottom:6px;}
-  .pick-card .pc-eyebrow{font-family:'IBM Plex Mono'; font-size:11px; color:var(--blue); text-transform:uppercase; margin-bottom:8px; display:block;}
+/* deploy decision */
+.dbox{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:20px;}
+.dq{margin-bottom:16px;} .dq p{font-size:13px;color:var(--paper);margin-bottom:9px;font-weight:600;}
+.dq-opts{display:flex;gap:7px;flex-wrap:wrap;}
+.dopt{padding:8px 14px;border-radius:8px;border:1px solid var(--panel-line);background:var(--panel-light);color:var(--ink-soft);cursor:pointer;font-size:12px;}
+.dopt.sel{background:var(--blue-dim);border-color:var(--blue);color:var(--paper);}
+.result-box{margin-top:8px;border:1px dashed var(--amber);border-radius:10px;padding:14px;background:rgba(242,177,52,.06);font-size:13px;color:var(--paper);}
 
-  /* decision tool */
-  .decision-box{background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius); padding:22px;}
-  .dq{margin-bottom:18px;}
-  .dq p{font-size:14px; color:var(--paper); margin-bottom:10px; font-weight:600;}
-  .dq-opts{display:flex; gap:8px; flex-wrap:wrap;}
-  .dopt{
-    padding:9px 16px; border-radius:8px; border:1px solid var(--panel-line); background:var(--panel-light);
-    color:var(--ink-soft); cursor:pointer; font-size:13px;
-  }
-  .dopt.sel{background:var(--blue-dim); border-color:var(--blue); color:var(--paper);}
-  .result-box{
-    margin-top:8px; border:1px dashed var(--amber); border-radius:10px; padding:16px; background:rgba(242,177,52,0.06);
-    font-size:14px; color:var(--paper);
-  }
+/* arch */
+.arch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+@media(max-width:640px){.arch-grid{grid-template-columns:1fr;}}
+.arch-col{text-align:center;}
+.arch-col h4{font-family:'IBM Plex Mono';font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-faint);margin-bottom:9px;}
+.arch-box{border:2px solid var(--panel-line);border-radius:9px;padding:12px 9px;cursor:pointer;font-size:12px;background:var(--panel);}
+.arch-box:hover{border-color:var(--blue);}
+.arch-box.cp{border-color:var(--red-dim);} .arch-box.infra{border-color:var(--ink-faint);} .arch-box.wk{border-color:var(--blue-dim);}
+.arch-box.sel{background:var(--panel-light);border-color:var(--amber) !important;}
+.arch-detail{margin-top:16px;background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:16px;font-size:13px;min-height:55px;}
 
-  /* architecture diagram */
-  .arch-grid{display:grid; grid-template-columns:1fr; gap:18px;}
-  @media(min-width:760px){.arch-grid{grid-template-columns:1fr 1fr 1fr;}}
-  .arch-col{text-align:center;}
-  .arch-col h4{font-family:'IBM Plex Mono'; font-size:12px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-faint); margin-bottom:10px;}
-  .arch-box{
-    border:2px solid var(--panel-line); border-radius:9px; padding:14px 10px; margin-bottom:8px; cursor:pointer; font-size:13px;
-    background:var(--panel);
-  }
-  .arch-box:hover{border-color:var(--blue);}
-  .arch-box.cp{border-color:var(--red-dim);}
-  .arch-box.infra{border-color:var(--ink-faint);}
-  .arch-box.wk{border-color:var(--blue-dim);}
-  .arch-box.sel{background:var(--panel-light); border-color:var(--amber) !important;}
-  .arch-detail{
-    margin-top:18px; background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius); padding:18px; font-size:14px; min-height:60px;
-  }
+/* sizing calc */
+.calc-box{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:22px;}
+.calc-row{margin-bottom:17px;}
+.calc-row label{display:flex;justify-content:space-between;font-size:12px;color:var(--paper);margin-bottom:7px;font-family:'IBM Plex Mono';}
+.calc-row label .val{color:var(--amber);}
+input[type=range]{width:100%;accent-color:var(--red);}
+select{width:100%;background:var(--ink);color:var(--paper);border:1px solid var(--panel-line);border-radius:8px;padding:9px;font-size:13px;}
+.cflags{display:flex;gap:16px;flex-wrap:wrap;}
+.cflag{display:flex;align-items:center;gap:7px;font-size:12px;}
+.cflag input{width:15px;height:15px;accent-color:var(--green);}
+.receipt{margin-top:18px;background:var(--ink);border:1px dashed var(--ink-faint);border-radius:10px;padding:16px;font-family:'IBM Plex Mono';font-size:12px;color:var(--ink-soft);line-height:1.9;}
+.receipt .rline{display:flex;justify-content:space-between;border-bottom:1px dotted var(--panel-line);padding:3px 0;}
+.receipt .rtotal{color:var(--amber);font-weight:600;border-bottom:none;font-size:14px;margin-top:5px;}
+.ships{margin-top:14px;display:flex;flex-wrap:wrap;gap:5px;}
+.ship{width:28px;height:20px;background:var(--blue-dim);border:1px solid var(--blue);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--paper);font-family:'IBM Plex Mono';}
 
-  /* sizing calculator */
-  .calc-box{background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius); padding:24px;}
-  .calc-row{margin-bottom:20px;}
-  .calc-row label{display:flex; justify-content:space-between; font-size:13px; color:var(--paper); margin-bottom:8px; font-family:'IBM Plex Mono';}
-  .calc-row label .val{color:var(--amber);}
-  input[type=range]{width:100%; accent-color:var(--red);}
-  select{
-    width:100%; background:var(--ink); color:var(--paper); border:1px solid var(--panel-line); border-radius:8px; padding:10px; font-size:14px;
-  }
-  .calc-flags{display:flex; gap:18px; flex-wrap:wrap;}
-  .flag{display:flex; align-items:center; gap:8px; font-size:13px;}
-  .flag input{width:16px; height:16px; accent-color:var(--green);}
-  .receipt{
-    margin-top:22px; background:var(--ink); border:1px dashed var(--ink-faint); border-radius:10px; padding:18px;
-    font-family:'IBM Plex Mono'; font-size:13px; color:var(--ink-soft); line-height:1.9;
-  }
-  .receipt .line{display:flex; justify-content:space-between; border-bottom:1px dotted var(--panel-line); padding:4px 0;}
-  .receipt .total{color:var(--amber); font-weight:600; border-bottom:none; font-size:15px; margin-top:6px;}
-  .ships{margin-top:18px; display:flex; flex-wrap:wrap; gap:6px; align-items:center;}
-  .ship{
-    width:30px; height:22px; background:var(--blue-dim); border:1px solid var(--blue); border-radius:3px;
-    display:flex; align-items:center; justify-content:center; font-size:10px; color:var(--paper); font-family:'IBM Plex Mono';
-  }
-  .ship.more{background:none; border:none; color:var(--ink-faint);}
+/* TCO 3-way */
+.tco3-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0;}
+@media(max-width:640px){.tco3-grid{grid-template-columns:1fr;}}
+.tco3-col{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:16px;text-align:center;}
+.tco3-col.highlight{border-color:var(--amber);}
+.tco3-name{font-family:'Big Shoulders Display';font-size:17px;color:var(--paper);margin-bottom:10px;text-transform:uppercase;}
+.tco3-total{font-family:'Big Shoulders Display';font-size:36px;color:var(--red);line-height:1;margin:10px 0;}
+.tco3-col.highlight .tco3-total{color:var(--green);}
+.tco3-breakdown{font-size:11px;font-family:'IBM Plex Mono';color:var(--ink-faint);text-align:left;line-height:2;}
+.tco3-breakdown .component{display:flex;justify-content:space-between;}
+.tco3-bar-wrap{height:10px;background:var(--ink);border-radius:5px;margin:8px 0;overflow:hidden;}
+.tco3-bar{height:100%;border-radius:5px;background:var(--red);transition:width .35s ease;}
+.tco3-col.highlight .tco3-bar{background:var(--green);}
+.tco3-verdict{border:1px solid var(--panel-line);border-radius:10px;padding:14px;background:rgba(242,177,52,.06);font-size:13px;color:var(--paper);margin-top:14px;}
 
-  /* tco */
-  .tco-bars{display:flex; gap:30px; align-items:flex-end; height:220px; margin:24px 0; justify-content:center;}
-  .tco-col{display:flex; flex-direction:column; align-items:center; gap:8px; width:120px;}
-  .tco-bar{width:60px; border-radius:6px 6px 0 0; transition:height .25s ease;}
-  .tco-bar.onprem{background:var(--red);}
-  .tco-bar.cloud{background:var(--blue);}
-  .tco-bar-track{height:200px; display:flex; align-items:flex-end;}
-  .tco-num{font-family:'IBM Plex Mono'; font-size:13px; color:var(--paper);}
+/* pod lifecycle */
+.pod-stage{display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center;margin:16px 0;}
+.pod-box{width:100px;height:100px;border:2px dashed var(--ink-faint);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-size:11px;color:var(--ink-faint);background:var(--panel);}
+.pod-box .ico{font-size:26px;}
+.locker{width:85px;height:85px;border:2px solid var(--amber);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:10px;color:var(--amber);}
+.p-arrow{font-size:20px;color:var(--ink-faint);}
 
-  /* storage / pod lifecycle */
-  .pod-stage{display:flex; gap:24px; align-items:center; flex-wrap:wrap; justify-content:center; margin:18px 0;}
-  .pod-box{
-    width:110px; height:110px; border:2px dashed var(--ink-faint); border-radius:10px; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:6px; font-size:11px; color:var(--ink-faint); background:var(--panel);
-  }
-  .pod-box .icon{font-size:28px;}
-  .locker{
-    width:90px; height:90px; border:2px solid var(--amber); border-radius:10px; display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:4px; font-size:10px; color:var(--amber);
-  }
-  .arrow{font-size:22px; color:var(--ink-faint);}
+/* VMs vs OCP */
+.vm-grid{display:grid;gap:0;}
+.vm-row{display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--panel-line);cursor:pointer;}
+.vm-row:hover{background:var(--panel-light);}
+.vm-row.vm-header{background:var(--panel-light);}
+.vm-cell{padding:12px 14px;font-size:13px;}
+.vm-cell:first-child{color:var(--paper);font-weight:600;}
+.vm-indicator{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;}
+.vm-bad{color:#FF8A80;} .vm-bad .vm-indicator{background:#FF8A80;}
+.vm-good{color:var(--green);} .vm-good .vm-indicator{background:var(--green);}
+.vm-detail{display:none;grid-column:1/-1;padding:10px 14px;background:rgba(63,167,214,.06);border-bottom:1px solid var(--blue-dim);font-size:12px;color:var(--ink-soft);}
+.vm-row.open .vm-detail{display:block;}
+.vm-row.vm-header .vm-cell{font-family:'IBM Plex Mono';font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);}
 
-  /* s2i stepper */
-  .stepper{display:flex; gap:6px; margin-bottom:18px;}
-  .step-dot{flex:1; height:6px; border-radius:3px; background:var(--panel-line);}
-  .step-dot.done{background:var(--green);}
-  .step-dot.now{background:var(--amber);}
-  .step-panel{background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius); padding:22px; min-height:140px;}
-  .step-panel h4{font-size:20px; margin-bottom:10px;}
-  .step-nav{display:flex; gap:10px; margin-top:16px;}
-  .nav-btn{
-    padding:10px 18px; border-radius:8px; border:1px solid var(--panel-line); background:var(--panel-light);
-    color:var(--paper); cursor:pointer; font-family:'IBM Plex Mono'; font-size:13px;
-  }
-  .nav-btn:disabled{opacity:0.35; cursor:not-allowed;}
-  .stopwatch{
-    display:flex; align-items:center; gap:14px; background:var(--ink); border:1px solid var(--panel-line); border-radius:10px;
-    padding:14px 18px; margin-top:18px; flex-wrap:wrap;
-  }
-  .sw-time{font-family:'IBM Plex Mono'; font-size:32px; color:var(--green);}
-  .sw-time.warn{color:var(--amber);}
-  .sw-time.bad{color:var(--red);}
-  .sw-btn{padding:8px 14px; border-radius:7px; border:1px solid var(--panel-line); background:var(--panel-light); color:var(--paper); cursor:pointer; font-size:13px;}
-  .sw-label{font-size:12px; color:var(--ink-faint);}
+/* S2I stepper */
+.stepper{display:flex;gap:5px;margin-bottom:16px;}
+.step-dot{flex:1;height:5px;border-radius:3px;background:var(--panel-line);}
+.step-dot.done{background:var(--green);} .step-dot.now{background:var(--amber);}
+.step-panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:20px;min-height:120px;}
+.step-panel h4{font-size:18px;margin-bottom:9px;}
+.step-nav{display:flex;gap:9px;margin-top:14px;}
+.nav-btn{padding:9px 16px;border-radius:8px;border:1px solid var(--panel-line);background:var(--panel-light);color:var(--paper);cursor:pointer;font-family:'IBM Plex Mono';font-size:12px;}
+.nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+.stopwatch{display:flex;align-items:center;gap:12px;background:var(--ink);border:1px solid var(--panel-line);border-radius:10px;padding:12px 16px;margin-top:16px;flex-wrap:wrap;}
+.sw-time{font-family:'IBM Plex Mono';font-size:30px;color:var(--green);}
+.sw-time.warn{color:var(--amber);} .sw-time.bad{color:var(--red);}
+.sw-btn{padding:7px 12px;border-radius:7px;border:1px solid var(--panel-line);background:var(--panel-light);color:var(--paper);cursor:pointer;font-size:12px;}
+.sw-label{font-size:11px;color:var(--ink-faint);}
 
-  /* ecosystem */
-  .eco-tabs{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
-  .eco-tab{
-    padding:10px 18px; border-radius:8px; border:1px solid var(--panel-line); background:var(--panel); color:var(--ink-soft);
-    cursor:pointer; font-family:'Big Shoulders Display'; font-size:15px; text-transform:uppercase;
-  }
-  .eco-tab.active{background:var(--red-dim); border-color:var(--red); color:var(--paper);}
-  .eco-panel{display:none;}
-  .eco-panel.show{display:block;}
+/* ecosystem tabs */
+.eco-tabs{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+.eco-tab{padding:9px 16px;border-radius:8px;border:1px solid var(--panel-line);background:var(--panel);color:var(--ink-soft);cursor:pointer;font-family:'Big Shoulders Display';font-size:14px;text-transform:uppercase;}
+.eco-tab.active{background:var(--red-dim);border-color:var(--red);color:var(--paper);}
+.eco-panel{display:none;} .eco-panel.show{display:block;}
+.daytwo-box{border:1px solid var(--blue-dim);border-radius:var(--radius);padding:20px;background:rgba(63,167,214,.04);margin-top:16px;}
+.daytwo-box h3{font-size:22px;margin-bottom:12px;color:var(--blue);}
 
-  /* red flag checker */
-  .flag-list{display:grid; gap:10px; margin-bottom:18px;}
-  .flag-item{
-    border:1px solid var(--panel-line); border-radius:10px; padding:14px 18px; cursor:pointer; background:var(--panel); font-size:14px;
-    display:flex; gap:12px; align-items:center;
-  }
-  .flag-item.checked{border-color:var(--red); background:var(--red-dim); color:var(--paper);}
-  .flag-item .box{width:18px; height:18px; border:2px solid var(--ink-faint); border-radius:4px; flex:none;}
-  .flag-item.checked .box{background:var(--red); border-color:var(--red);}
-  .verdict{border-radius:10px; padding:18px; font-size:14px; border:1px solid var(--panel-line);}
-  .verdict.alert{border-color:var(--red); background:var(--red-dim); color:var(--paper);}
-  .verdict.ok{border-color:var(--green); background:#163225; color:var(--paper);}
+/* red flags */
+.flag-item{border:1px solid var(--panel-line);border-radius:10px;padding:12px 16px;cursor:pointer;background:var(--panel);font-size:13px;display:flex;gap:11px;align-items:center;margin-bottom:9px;}
+.flag-item.checked{border-color:var(--red);background:var(--red-dim);color:var(--paper);}
+.flag-box{width:16px;height:16px;border:2px solid var(--ink-faint);border-radius:4px;flex:none;}
+.flag-item.checked .flag-box{background:var(--red);border-color:var(--red);}
+.verdict{border-radius:10px;padding:16px;font-size:13px;border:1px solid var(--panel-line);}
+.verdict.alert{border-color:var(--red);background:var(--red-dim);color:var(--paper);}
+.verdict.ok{border-color:var(--green);background:#163225;color:var(--paper);}
 
-  /* checklist */
-  .check-list{list-style:none; padding:0; margin:0; display:grid; gap:8px;}
-  .check-item{
-    display:flex; gap:12px; align-items:flex-start; border:1px solid var(--panel-line); border-radius:9px; padding:12px 16px;
-    cursor:pointer; background:var(--panel); font-size:14px;
-  }
-  .check-item .box{width:18px; height:18px; border:2px solid var(--ink-faint); border-radius:4px; flex:none; margin-top:2px;}
-  .check-item.done{color:var(--ink-faint); text-decoration:line-through;}
-  .check-item.done .box{background:var(--green); border-color:var(--green);}
+/* checklist */
+.ck-item{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--panel-line);border-radius:9px;padding:11px 14px;cursor:pointer;background:var(--panel);font-size:13px;margin-bottom:7px;}
+.ck-box{width:16px;height:16px;border:2px solid var(--ink-faint);border-radius:4px;flex:none;margin-top:2px;}
+.ck-item.done{color:var(--ink-faint);text-decoration:line-through;}
+.ck-item.done .ck-box{background:var(--green);border-color:var(--green);}
 
-  /* quiz */
-  .quiz-q{background:var(--panel); border:1px solid var(--panel-line); border-radius:var(--radius); padding:20px; margin-bottom:16px;}
-  .quiz-q h4{font-size:16px; color:var(--paper); margin-bottom:14px; text-transform:none; font-family:'IBM Plex Sans'; font-weight:600;}
-  .quiz-opts{display:grid; gap:8px;}
-  .qopt{
-    text-align:left; padding:10px 14px; border-radius:8px; border:1px solid var(--panel-line); background:var(--panel-light);
-    color:var(--ink-soft); cursor:pointer; font-size:14px;
-  }
-  .qopt.correct{border-color:var(--green); background:#163225; color:var(--paper);}
-  .qopt.wrong{border-color:var(--red); background:var(--red-dim); color:var(--paper);}
-  .qopt:disabled{cursor:default;}
-  .quiz-explain{display:none; margin-top:10px; font-size:13px; color:var(--ink-faint); border-left:3px solid var(--blue); padding-left:12px;}
-  .quiz-explain.show{display:block;}
-  .quiz-score{
-    position:sticky; top:64px; z-index:5; display:inline-block; background:var(--amber); color:var(--ink); font-family:'IBM Plex Mono';
-    padding:8px 16px; border-radius:8px; margin-bottom:18px; font-size:13px; font-weight:600;
-  }
+/* quiz */
+.quiz-q{background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);padding:18px;margin-bottom:14px;}
+.quiz-q h4{font-size:15px;color:var(--paper);margin-bottom:12px;text-transform:none;font-family:'IBM Plex Sans';font-weight:600;}
+.quiz-opts{display:grid;gap:7px;}
+.qopt{text-align:left;padding:9px 13px;border-radius:8px;border:1px solid var(--panel-line);background:var(--panel-light);color:var(--ink-soft);cursor:pointer;font-size:13px;}
+.qopt.correct{border-color:var(--green);background:#163225;color:var(--paper);}
+.qopt.wrong{border-color:var(--red);background:var(--red-dim);color:var(--paper);}
+.quiz-exp{display:none;margin-top:9px;font-size:12px;color:var(--ink-faint);border-left:3px solid var(--blue);padding-left:11px;}
+.quiz-exp.show{display:block;}
+.quiz-score{display:inline-block;background:var(--amber);color:var(--ink);font-family:'IBM Plex Mono';padding:7px 14px;border-radius:8px;margin-bottom:16px;font-size:12px;font-weight:600;}
 
-  /* glossary tooltips — only attached to elements that are actually enabled/relevant */
-  .info-term{border-bottom:1px dotted var(--ink-faint); cursor:help;}
-  .info-term::after{content:" ⓘ"; font-size:0.75em; color:var(--blue);}
-  .hw-item .info-term{border-bottom-color:rgba(255,255,255,0.35);}
-  table.cmp .info-term{border-bottom-color:var(--ink-faint);}
-  .global-tooltip{
-    position:fixed; display:none; max-width:280px; background:var(--paper); color:var(--ink);
-    border:1px solid var(--paper-line); border-radius:8px; padding:12px 16px; font-size:13px; line-height:1.5;
-    z-index:300; box-shadow:0 10px 28px rgba(0,0,0,0.4);
-  }
+/* index overlay */
+.idx-overlay{position:fixed;inset:0;background:rgba(8,14,19,.97);z-index:100;display:none;overflow-y:auto;padding:30px 20px 60px;}
+.idx-overlay.open{display:block;}
+.idx-list{max-width:600px;margin:0 auto;list-style:none;padding:0;}
+.idx-list a{display:flex;gap:14px;align-items:baseline;text-decoration:none;color:var(--paper);padding:12px 7px;border-bottom:1px solid var(--panel-line);}
+.idx-list a:hover{color:var(--amber);}
+.idx-num{font-family:'IBM Plex Mono';color:var(--ink-faint);font-size:13px;min-width:30px;}
+.idx-lbl{font-family:'Big Shoulders Display';font-size:18px;text-transform:uppercase;}
+.idx-close{background:none;border:1px solid var(--panel-line);color:var(--paper);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:16px;margin-bottom:20px;}
 
-  /* sale Q&A accordion (CONT-03) */
-  .qa-block{border:1px solid var(--panel-line); border-radius:10px; margin-bottom:10px; overflow:hidden; background:var(--panel);}
-  .qa-head{display:flex; justify-content:space-between; align-items:center; padding:14px 18px; cursor:pointer;}
-  .qa-head h4{font-size:16px; margin:0; color:var(--paper);}
-  .qa-head span{font-family:'IBM Plex Mono'; color:var(--ink-faint);}
-  .qa-body{display:none; padding:6px 18px 18px;}
-  .qa-block.open .qa-body{display:block;}
-  .qa-block.open .qa-head{border-bottom:1px solid var(--panel-line);}
-  .qa-block.open .qa-head span{color:var(--amber);}
-  .qa-case{border-left:3px solid var(--blue); border-radius:0 8px 8px 0; padding:10px 14px; margin-top:12px; background:var(--panel-light);}
-  .qa-case .client{font-family:'IBM Plex Mono'; font-size:12px; color:var(--blue); text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:6px;}
-  .qa-case .reply{font-size:14px; color:var(--ink-soft);}
-
-  footer{padding:50px 0 80px; text-align:center; color:var(--ink-faint); font-size:13px;}
-  .small{font-size:12px; color:var(--ink-faint);}
-  ul.plain{padding-left:18px; font-size:14px; color:var(--ink-soft);}
-  ul.plain li{margin-bottom:6px;}
+small,.small{font-size:12px;color:var(--ink-faint);}
+ul.plain{padding-left:17px;font-size:13px;color:var(--ink-soft);}
+ul.plain li{margin-bottom:5px;}
+.sep-line{border:none;border-top:1px solid var(--panel-line);margin:20px 0;}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.badge{font-family:'IBM Plex Mono';font-size:11px;padding:5px 11px;border-radius:20px;background:var(--panel-light);border:1px solid var(--panel-line);color:var(--ink-soft);}
+.badge.hi{border-color:var(--blue);color:var(--blue);}
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">
-      <span class="brand-mark">⛟ TERMINAL OPENSHIFT</span>
-      <span class="brand-sub">Manifiesto de carga · TD SYNNEX → Coresolutions</span>
+  <span class="brand-mark">⛟ <span class="brand-full">TERMINAL OPENSHIFT</span></span>
+  <div class="hdr-nav">
+    <button class="sn-arrow" id="navPrev" disabled>←</button>
+    <div class="sn-center">
+      <span class="sn-tag" id="snTag"></span>
+      <span class="sn-title" id="snTitle"></span>
     </div>
-    <button class="menu-btn" id="menuBtn">≡ ÍNDICE</button>
+    <button class="sn-arrow" id="navNext">→</button>
+  </div>
+  <div class="topbar-right">
+    <span class="sn-count" id="snCount"></span>
+    <button class="tb-btn" id="idxBtn">≡ ÍNDICE</button>
   </div>
 </div>
+<div class="progress-wrap"><div class="progress-fill" id="progFill"></div></div>
 
-<div class="index-overlay" id="indexOverlay">
-  <div class="index-head">
-    <h2 style="font-size:22px;">Mapa del puerto</h2>
-    <button class="index-close" id="indexClose">✕</button>
+<!-- INDEX OVERLAY -->
+<div class="idx-overlay" id="idxOverlay">
+  <div style="max-width:600px;margin:0 auto;">
+    <button class="idx-close" id="idxClose">✕</button>
+    <h2 style="font-size:22px;margin-bottom:20px;">Mapa del puerto</h2>
   </div>
-  <ul class="index-list" id="indexList">
-    <li><a href="#ch00"><span class="index-num">00</span><span class="index-label">Bienvenida</span></a></li>
-    <li><a href="#ch01"><span class="index-num">01</span><span class="index-label">El dolor del cliente</span></a></li>
-    <li><a href="#ch02"><span class="index-num">02</span><span class="index-label">Contenedores y Kubernetes 101</span></a></li>
-    <li><a href="#ch03"><span class="index-num">03</span><span class="index-label">OpenShift, la terminal completa</span></a></li>
-    <li><a href="#ch04"><span class="index-num">04</span><span class="index-label">El mapa de ediciones</span></a></li>
-    <li><a href="#ch05"><span class="index-num">05</span><span class="index-label">ROKS de cerca</span></a></li>
-    <li><a href="#ch06"><span class="index-num">06</span><span class="index-label">Seguridad: del portón al pasillo</span></a></li>
-    <li><a href="#ch07"><span class="index-num">07</span><span class="index-label">Instalación y arquitectura</span></a></li>
-    <li><a href="#ch08"><span class="index-num">08</span><span class="index-label">Sizing: cuántos barcos</span></a></li>
-    <li><a href="#ch09"><span class="index-num">09</span><span class="index-label">TCO: comprar o alquilar</span></a></li>
-    <li><a href="#ch10"><span class="index-num">10</span><span class="index-label">Storage: la carga del contenedor</span></a></li>
-    <li><a href="#ch11"><span class="index-num">11</span><span class="index-label">Día 2 — La demo que cierra (S2I)</span></a></li>
-    <li><a href="#ch12"><span class="index-num">12</span><span class="index-label">El modelo de negocio</span></a></li>
-    <li><a href="#ch13"><span class="index-num">13</span><span class="index-label">Cuándo llamar a DayTwo</span></a></li>
-    <li><a href="#ch14"><span class="index-num">14</span><span class="index-label">Checklist y próximos pasos</span></a></li>
-    <li><a href="#ch15"><span class="index-num">15</span><span class="index-label">Ponte a prueba</span></a></li>
-  </ul>
+  <ul class="idx-list" id="idxList"></ul>
 </div>
 
-<!-- ================= HERO ================= -->
-<header class="hero">
-  <div class="wrap">
-    <div class="hero-eyebrow">Capacitación TD SYNNEX · Red Hat × IBM Cloud · reconstruida como puerto de contenedores</div>
-    <h1>No fuiste a la charla.<br>Vas a saber <span>igual o más</span> que quien sí fue.</h1>
-    <p class="hero-lede">Christian se sentó dos días en una capacitación sobre OpenShift en IBM Cloud (ROKS). Esto es ese contenido completo, pero explicado como si fuera un puerto de carga real: contenedores, grúas, terminales y barcos. Si la palabra "pod" te asusta, esta página está hecha para que deje de asustarte.</p>
-    <p class="hero-note">Toca, arrastra y haz clic en todo lo que veas resaltado. Cada capítulo tiene al menos una pieza interactiva — no es solo para leer.</p>
+<!-- TOOLTIP -->
+<div class="global-tooltip" id="gTip"></div>
 
-    <div class="hero-widget">
-      <p style="font-family:'IBM Plex Mono'; font-size:12px; color:var(--ink-faint); text-transform:uppercase; margin-bottom:14px;">Empecemos por la pregunta que todo cliente hace: "¿para qué pago OpenShift si Kubernetes es gratis?"</p>
-      <div class="hw-top">
-        <button class="hw-btn" data-mode="k8s"><b>Kubernetes puro</b>el motor, solo el motor</button>
-        <button class="hw-btn active" data-mode="ocp"><b>OpenShift</b>el motor + la terminal completa lista para operar</button>
+<!-- SLIDER VIEWPORT -->
+<div class="viewport" id="viewport">
+<div class="track" id="track">
+
+<!-- ═══════ S0: BIENVENIDA ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-00</span><span class="chapter-kicker">Punto de partida</span></div>
+  <h2>No fuiste a la charla.<br>Vas a saber igual o más.</h2>
+  <p class="lede">Christian se sentó dos días en una capacitación sobre OpenShift en IBM Cloud. Esto es ese contenido completo — pero interactivo, con analogías y con todo lo que necesitas para salir de aquí listo para vender o evaluar la solución.</p>
+  <p class="analogy"><b>La metáfora que vas a ver en todo este material</b>Un contenedor de software es exactamente lo mismo que un contenedor de carga marítima: empaqueta todo lo que necesita la aplicación para que corra igual en cualquier lado — tu laptop, un servidor on-premise, o cualquier nube. Kubernetes es el sistema que mueve esos contenedores. OpenShift es la terminal portuaria completa que opera todo eso sin que tengas que construirla desde cero.</p>
+  <p style="font-size:13px;color:var(--ink-faint);margin-bottom:14px;">Navega con ← → las flechas de arriba, las teclas del teclado, o desliza en móvil. Cada slide tiene al menos un elemento interactivo.</p>
+
+  <div class="hero-widget">
+    <p style="font-family:'IBM Plex Mono';font-size:11px;color:var(--ink-faint);text-transform:uppercase;margin-bottom:12px;">¿Para qué pago OpenShift si Kubernetes es gratis? — toca para comparar y pasa el cursor sobre cada ítem habilitado</p>
+    <div class="hw-top">
+      <button class="hw-btn" data-mode="k8s"><b>Kubernetes puro</b>el motor, solo el motor</button>
+      <button class="hw-btn active" data-mode="ocp"><b>OpenShift</b>motor + terminal completa, lista para operar</button>
+    </div>
+    <div class="hw-grid" id="hwGrid"></div>
+  </div>
+</div></div>
+
+<!-- ═══════ S1: EL DOLOR ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-01</span><span class="chapter-kicker">Antes del producto, el problema</span></div>
+  <h2>El dolor real que esto resuelve</h2>
+  <p class="lede">El material arranca con el dolor del cliente, no con la tecnología. Si no entiendes este dolor, vendes características. Si lo entiendes, vendes alivio.</p>
+  <div class="grid3" style="margin-bottom:20px;">
+    <div class="card"><div class="stat-num">83%</div><div class="stat-label">de proyectos Kubernetes fallan en producción por falta de expertise operativo</div></div>
+    <div class="card"><div class="stat-num">4-6</div><div class="stat-label">semanas es el despliegue promedio sin una plataforma gestionada</div></div>
+    <div class="card"><div class="stat-num">60%</div><div class="stat-label">del tiempo de ingenieros se pierde en infraestructura, no en código</div></div>
+  </div>
+  <div class="analogy"><b>Analogía</b>Comprar un motor de barco no te convierte en naviera. Necesitas tripulación certificada, rutas, permisos de puerto y seguro. Kubernetes es el motor. Sin lo demás, cada despliegue es zarpar sin mapa.</div>
+  <h3 style="font-size:18px;margin:24px 0 12px;">Y la adopción de contenedores sigue subiendo</h3>
+  <div class="grid3">
+    <div class="card" style="text-align:center;"><div class="stat-num" style="color:var(--ink-faint);">24%</div><div class="stat-label">Hoy</div></div>
+    <div class="card" style="text-align:center;"><div class="stat-num" style="color:var(--blue);">30%</div><div class="stat-label">En un año</div></div>
+    <div class="card" style="text-align:center;"><div class="stat-num">50%</div><div class="stat-label">En 2+ años</div></div>
+  </div>
+  <p style="font-size:12px;color:var(--ink-faint);margin-top:10px;">Porcentaje de empresas usando contenedores para proyectos o apps. Fuente: datos de mercado Red Hat.</p>
+</div></div>
+
+<!-- ═══════ S2: KUBERNETES 101 ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-02</span><span class="chapter-kicker">Lo básico sin saltarse nada</span></div>
+  <h2>Contenedores y Kubernetes desde cero</h2>
+  <p class="lede">Un contenedor empaqueta tu aplicación con sus dependencias para que corra igual en cualquier ambiente. Kubernetes es el sistema que decide dónde va cada contenedor, cuántas copias mantiene vivas, y qué hace si uno falla.</p>
+  <div class="analogy"><b>Analogía del patio de grúas</b>Con 5 contenedores en el patio, los acomodas a mano. Con 5,000 moviéndose todo el día necesitas grúas automatizadas que sepan qué contenedor va en qué barco, cuáles están dañados y cuáles hay que reemplazar. Eso es Kubernetes: el cerebro que mueve contenedores sin que un humano lo haga uno por uno.</div>
+  <h3 style="font-size:18px;margin:22px 0 12px;">Pero "Kubernetes is not enough"</h3>
+  <p style="font-size:13px;max-width:660px;margin-bottom:16px;">Kubernetes mueve y organiza contenedores. Pero NO trae de fábrica: plataforma de desarrollo, registro de imágenes, pipelines CI/CD, portal de desarrolladores, monitoreo avanzado, ni modelo de seguridad empresarial completo. Tienes que armarlo tú, piezas sueltas, una por una.</p>
+  <div class="grid2">
+    <div class="card"><h4>Kubernetes te da</h4><p>El motor de orquestación: decide dónde corre cada contenedor y lo mantiene vivo. Nada más.</p></div>
+    <div class="card" style="border-color:var(--red-dim);"><h4>Kubernetes NO te da</h4><p>Consola visual, registry, CI/CD, portal de devs, seguridad enterprise, soporte con SLA. Eso lo armas tú.</p></div>
+  </div>
+</div></div>
+
+<!-- ═══════ S3: OPENSHIFT + PARCHES ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-03</span><span class="chapter-kicker">El producto</span></div>
+  <h2>OpenShift: la terminal completa</h2>
+  <p class="lede">Construido sobre Kubernetes, diseñado para usarse desde el día uno. Sin fricciones, sin configurar semanas, sin curva brutal de aprendizaje. La plataforma de contenedores enterprise número uno del mercado.</p>
+  <div class="grid3" style="margin-bottom:20px;">
+    <div class="card"><div class="stat-num">3,500+</div><div class="stat-label">clientes enterprise globales</div></div>
+    <div class="card"><div class="stat-num">10+</div><div class="stat-label">años liderando el mercado</div></div>
+    <div class="card"><div class="stat-num">$1B+</div><div class="stat-label">en suscripciones anuales</div></div>
+  </div>
+
+  <hr class="sep-line">
+  <h3 style="font-size:17px;margin:0 0 12px;">Glosario rápido antes del tip de venta</h3>
+  <div class="acc" id="accParches">
+    <div class="acc-h"><h4>¿Qué son los parches y por qué importan?</h4><span class="arr">+</span></div>
+    <div class="acc-b">
+      <p>Los parches son actualizaciones de seguridad y correcciones de bugs que se aplican al sistema operativo de los nodos, a Kubernetes, y a los componentes de la plataforma.</p>
+      <p>Con Kubernetes vanilla, alguien en tu equipo tiene que:</p>
+      <ul class="plain">
+        <li>Detectar que salió una nueva versión con un fix de seguridad</li>
+        <li>Planificar cuándo aplicarla sin bajar producción</li>
+        <li>Drenar el nodo (mover todos sus pods a otro nodo), aplicar el parche, reiniciar, verificar</li>
+        <li>Repetir nodo por nodo — en un clúster de 9 nodos, esto puede ser un día entero</li>
+        <li>Si no se hace, el clúster acumula vulnerabilidades conocidas y explotables (CVEs)</li>
+      </ul>
+      <p style="margin-top:10px;"><b style="color:var(--green);">Con ROKS:</b> IBM gestiona los parches del control plane automáticamente. El cliente decide cuándo actualizar sus workers, y OpenShift lo hace nodo por nodo sin bajar las aplicaciones. El equipo de TI del cliente deja de ser responsable de esa tarea operativa.</p>
+    </div>
+  </div>
+
+  <hr class="sep-line">
+  <div class="analogy"><b>Tip de venta — "ya tenemos Kubernetes"</b>Cuando el cliente diga "ya tenemos Kubernetes", pregúntale: ¿quién gestiona los parches? ¿cuánto tarda un despliegue? Esas dos respuestas revelan exactamente el dolor que OpenShift resuelve.</div>
+
+  <h3 style="font-size:17px;margin:20px 0 12px;">Si el cliente responde... — toca para ver cómo seguir la conversación</h3>
+  <div id="saleQA"></div>
+</div></div>
+
+<!-- ═══════ S4: ¿CUÁNDO CONVIENE? ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-04</span><span class="chapter-kicker">Calificación del cliente</span></div>
+  <h2>¿Cuándo realmente conviene OpenShift?</h2>
+  <div class="callout"><b>Solo uno basta.</b> Estos son cuatro escenarios alternativos, no requisitos acumulativos. Si el cliente cae en cualquiera de los cuatro, ya hay argumento sólido. Si no cae en ninguno, el argumento se debilita y probablemente hay otro cliente mejor para empezar. Los dos más frecuentes en Ecuador son el primero y el segundo.</div>
+  <div id="whenGrid" style="margin-top:14px;"></div>
+  <div class="analogy" style="margin-top:18px;"><b>Qué buscar en tus propios clientes</b>Financieras, cooperativas y utilities como CENTROSUR tienen compliance regulatorio casi garantizado (PCI-DSS, auditorías de la SBS). Cualquier cliente con RHEL o Satellite ya en producción es una entrada fácil. Empresa con equipo de desarrollo que se queja de despliegues lentos es la tercera puerta.</div>
+</div></div>
+
+<!-- ═══════ S5: MAPA DE EDICIONES ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-05</span><span class="chapter-kicker">No te confundas de versión</span></div>
+  <h2>El mapa de ediciones</h2>
+  <p class="lede">"OpenShift" no es una sola cosa. Hay variantes gestionadas en nube y variantes self-managed en escalera. Toca cada nivel para ver qué incluye y qué significa cada componente.</p>
+  <div class="ladder" id="ladder" style="margin-bottom:22px;"></div>
+  <h3 style="font-size:17px;margin:0 0 12px;">Opciones gestionadas en nube vs Kubernetes nativo — compara</h3>
+  <div class="filterbar" id="editionFilter">
+    <button class="fb active" data-f="all">Todas</button>
+    <button class="fb" data-f="cloud">Solo OpenShift en nube</button>
+    <button class="fb" data-f="raw">Solo Kubernetes nativo</button>
+  </div>
+  <table class="cmp" id="editionTable"><thead><tr><th>Opción</th><th>Sensación</th><th>Mejor para</th></tr></thead><tbody></tbody></table>
+  <div class="analogy"><b>La diferencia en una frase</b>OKD = construir tu propio patio desde cero. ARO/ROSA = alquilar una terminal OpenShift ya operando dentro de Azure o AWS. AKS/EKS = Kubernetes nativo de la nube, liviano, pero sin la plataforma completa de OpenShift encima.</div>
+</div></div>
+
+<!-- ═══════ S6: ROKS ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-06</span><span class="chapter-kicker">La pieza que vendemos</span></div>
+  <h2>ROKS: OpenShift gestionado en IBM Cloud</h2>
+  <p class="lede">IBM gestiona la infraestructura crítica — el cliente se concentra en sus aplicaciones. Toca un cuadrante para ver qué controla cada quién.</p>
+  <div class="quad-wrap" id="quadWrap"></div>
+  <p style="text-align:center;font-size:11px;color:var(--ink-faint);margin-bottom:16px;">↑ Control IBM · ↓ Control Cliente · ← Integración Cliente · Responsabilidad Compartida →</p>
+  <div class="quad-detail" id="quadDetail">Toca cualquier cuadrante para ver el detalle.</div>
+  <hr class="sep-line">
+  <h3 style="font-size:17px;margin:0 0 12px;">Tres formas de rentar espacio en el puerto</h3>
+  <div class="grid3" id="infraCards"></div>
+  <div class="analogy" id="infraDetail" style="margin-top:14px;"><b>Selecciona una opción arriba</b>Cada variante es como rentar un tipo distinto de espacio en el puerto.</div>
+  <div class="callout" style="margin-top:14px;"><b>Argumento de venta:</b> ROKS no es solo "Kubernetes en la nube". Es la única oferta donde IBM y Red Hat — dos líderes enterprise — comparten la responsabilidad operativa. El cliente no está solo. Hay dos empresas detrás del SLA.</div>
+</div></div>
+
+<!-- ═══════ S7: SEGURIDAD ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-07</span><span class="chapter-kicker">Seguridad y redes</span></div>
+  <h2>Del portón al pasillo interno</h2>
+  <p class="lede">La objeción más común: "ya tenemos firewall". La respuesta correcta no es discutir el firewall — es explicar qué pasa dentro de la terminal una vez que algo ya entró.</p>
+  <div class="acc"><div class="acc-h"><h4 style="color:var(--amber);">"Ya tenemos un firewall, ¿para qué necesitamos esto?" — toca para ver la respuesta</h4><span class="arr">+</span></div>
+  <div class="acc-b"><p>Un firewall protege el portón principal del puerto. Calico — la red Zero Trust que ROKS integra de fábrica, sin costo extra — pone un guardia en cada pasillo, cada bodega y cada grúa. Controla exactamente qué contenedor puede hablar con cuál.</p><p>El 70% de los ataques modernos ocurren en el <b>movimiento lateral dentro del cluster</b>, no en el portón de entrada. Un firewall externo no ve lo que pasa entre dos pods dentro del mismo nodo.</p></div></div>
+  <div class="grid2" style="margin-top:14px;">
+    <div class="card"><h4>Calico — Zero Trust de red</h4><p>Segmentación por namespace, políticas deny-by-default, visibilidad de flujos en tiempo real. También resuelve agotamiento de IPs con CIDR personalizado, sin rediseñar la red on-premise del cliente.</p></div>
+    <div class="card"><h4>SCC + Image Scanning + Compliance Operator</h4><p>SCC controla qué puede hacer cada contenedor. Escaneo automático de vulnerabilidades en cada imagen antes de llegar a producción. Compliance Operator verifica CIS, PCI-DSS y HIPAA, con reportes auditables sin trabajo manual.</p></div>
+  </div>
+  <div class="callout" style="margin-top:14px;"><b>Para clientes regulados (banca, cooperativas, gobierno):</b> el Compliance Operator elimina semanas de trabajo de auditoría manual que alguien tendría que hacer de todas formas para cumplir con SBS, PCI o HIPAA. Eso es tiempo del equipo que se recupera inmediatamente.</div>
+</div></div>
+
+<!-- ═══════ S8: INSTALACIÓN + ARQUITECTURA ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-08</span><span class="chapter-kicker">Cómo se construye</span></div>
+  <h2>Instalación y arquitectura del clúster</h2>
+  <p class="lede">Dos preguntas definen el método de instalación. Respóndelas y mira qué recomienda el material.</p>
+  <div class="dbox" id="deployBox">
+    <div class="dq"><p>1. ¿Qué prioriza el cliente?</p><div class="dq-opts">
+      <button class="dopt" data-q="1" data-v="speed">Velocidad y poca complejidad operativa</button>
+      <button class="dopt" data-q="1" data-v="control">Control total e integración con infraestructura existente</button>
+    </div></div>
+    <div class="dq"><p>2. ¿Necesita rendimiento físico máximo sin hipervisor?</p><div class="dq-opts">
+      <button class="dopt" data-q="2" data-v="yes">Sí — GPU, baja latencia, virtualización pesada</button>
+      <button class="dopt" data-q="2" data-v="no">No — una nube soportada está bien</button>
+    </div></div>
+    <div class="result-box" id="deployResult">Responde las dos preguntas para ver la recomendación.</div>
+  </div>
+  <hr class="sep-line">
+  <h3 style="font-size:17px;margin:0 0 12px;">Arquitectura 3+3+3 — toca cada bloque</h3>
+  <div class="arch-grid">
+    <div class="arch-col"><h4>Control Plane (3 nodos)</h4><div class="arch-box cp" data-arch="cp">API Server · Scheduler · Controllers · etcd</div></div>
+    <div class="arch-col"><h4>Infraestructura (3 nodos)</h4><div class="arch-box infra" data-arch="infra">Ingress · Registry · Monitoring · Logging</div></div>
+    <div class="arch-col"><h4>Workers (3+ nodos)</h4><div class="arch-box wk" data-arch="wk">Apps del cliente</div></div>
+  </div>
+  <div class="arch-detail" id="archDetail">Toca un bloque para ver para qué sirve y cuándo crece.</div>
+</div></div>
+
+<!-- ═══════ S9: SIZING ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-09</span><span class="chapter-kicker">El bloque más técnico</span></div>
+  <h2>Sizing: ¿cuántos barcos necesitas?</h2>
+  <p class="lede"><b style="color:var(--paper);">100 aplicaciones ≠ 100 pods.</b> Una app típica con frontend + backend + worker, con 2 réplicas cada uno, ya son 6 pods. El número de apps es el punto de partida, no el dato final.</p>
+  <div class="analogy"><b>Analogía</b>No preguntas "¿cuántas cajas tengo?" para saber cuántos barcos necesitas. Preguntas cuánto pesa cada caja, cuántas entran por barco, y cuánto margen dejas para la próxima temporada alta.</div>
+  <div class="calc-box">
+    <div class="calc-row"><label>Número de aplicaciones <span class="val" id="lblApps">100</span></label><input type="range" id="inApps" min="10" max="300" step="10" value="100"></div>
+    <div class="calc-row"><label>Complejidad típica</label><select id="inProfile"><option value="2.5">Frontend simple (≈2.5 pods/app)</option><option value="3">Backend / API (≈3 pods/app)</option><option value="8" selected>App completa: frontend + backend + worker (≈8 pods/app)</option><option value="12">Microservicio empresarial con HA fuerte (≈12 pods/app)</option></select></div>
+    <div class="calc-row"><label>Densidad por worker (referencia preventa) <span class="val" id="lblDensity">120</span> pods</label><input type="range" id="inDensity" min="80" max="200" step="10" value="120"><p class="small">Límite técnico: 250. Referencia conservadora de preventa: 100–150.</p></div>
+    <div class="cflags"><label class="cflag"><input type="checkbox" id="inHA" checked> Alta disponibilidad (+1 worker N+1)</label><label class="cflag"><input type="checkbox" id="inGrowth" checked> Headroom de crecimiento (+25%)</label></div>
+    <div class="receipt" id="receipt"></div>
+    <div class="ships" id="ships"></div>
+  </div>
+</div></div>
+
+<!-- ═══════ S10: TCO 3-VÍAS ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-10</span><span class="chapter-kicker">Comparación económica — ilustrativo</span></div>
+  <h2>¿Cuánto cuesta cada camino?</h2>
+  <p class="lede">Tres escenarios reales. Las cifras son ilustrativas para un clúster de tamaño mediano — úsalas para entender la forma de los costos, no como cotización. Los números exactos dependen de negociación, volumen y región.</p>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
+    <div class="calc-row" style="flex:1;min-width:180px;margin:0;">
+      <label style="font-family:'IBM Plex Mono';font-size:11px;color:var(--paper);display:flex;justify-content:space-between;">Workers <span class="val" id="tcoWorkers">5</span></label>
+      <input type="range" id="inWorkers" min="3" max="20" step="1" value="5">
+    </div>
+    <div class="calc-row" style="flex:1;min-width:180px;margin:0;">
+      <label style="font-family:'IBM Plex Mono';font-size:11px;color:var(--paper);display:flex;justify-content:space-between;">Años de operación <span class="val" id="tcoYears">3</span></label>
+      <input type="range" id="inTcoYears" min="1" max="10" step="1" value="3">
+    </div>
+  </div>
+  <div class="tco3-grid" id="tco3Grid"></div>
+  <div class="tco3-verdict" id="tco3Verdict"></div>
+  <p class="small" style="margin-top:10px;">* CAPEX: hardware + cableado + rack. OPS: costo de ingenieros que operan la plataforma. En cloud el costo de operación es mínimo porque IBM se encarga del plano de control.</p>
+</div></div>
+
+<!-- ═══════ S11: STORAGE ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-11</span><span class="chapter-kicker">Infraestructura y persistencia</span></div>
+  <h2>¿Qué pasa con los datos cuando reciclan el contenedor?</h2>
+  <p class="lede">Los pods son efímeros: se pueden reiniciar, mover o destruir en cualquier momento. Si tu app guarda datos dentro del contenedor, esos datos se pierden. Necesitas una bodega externa.</p>
+  <div class="pod-stage">
+    <div class="pod-box" id="podBox"><div class="ico">📦</div><span>Pod activo</span></div>
+    <div class="p-arrow">→</div>
+    <div class="locker" id="lockerBox"><span>🔒📄</span><span>Bodega externa (PV)</span></div>
+  </div>
+  <div style="text-align:center;margin-bottom:18px;">
+    <label class="cflag" style="display:inline-flex;justify-content:center;margin-right:12px;"><input type="checkbox" id="pvOn" checked> Persistent Volume conectado</label>
+    <button class="sw-btn" id="recycleBtn">♻️ Reciclar pod</button>
+    <p class="small" id="podMsg" style="margin-top:8px;min-height:18px;"></p>
+  </div>
+  <div class="grid2">
+    <div class="card"><h4>RWO — ReadWriteOnce</h4><p>Casillero privado: un solo pod lo monta a la vez. Ideal para bases de datos y apps con estado.</p></div>
+    <div class="card"><h4>RWX — ReadWriteMany</h4><p>Bodega compartida: múltiples pods acceden al mismo volumen. Ideal para archivos compartidos, logs o apps con acceso simultáneo.</p></div>
+  </div>
+  <hr class="sep-line">
+  <h3 style="font-size:15px;margin:0 0 10px;">Preguntas de preventa sobre storage</h3>
+  <ul class="plain"><li>¿Las apps necesitan persistencia?</li><li>¿Requieren storage compartido entre pods?</li><li>¿Qué performance? IOPS, latencia, throughput.</li><li>¿El cliente ya tiene Dell, HPE, NetApp u otro storage? (CSI Drivers integran todos)</li><li>¿Se requiere backup, snapshot, replicación o DR?</li></ul>
+</div></div>
+
+<!-- ═══════ S12: VMs vs OPENSHIFT ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-12</span><span class="chapter-kicker">OpenShift vs lo que ya tienen</span></div>
+  <h2>Contenedores vs VMs: riesgos cubiertos</h2>
+  <p class="lede">Muchos clientes en Ecuador viven en un modelo de VMs (VMware, Hyper-V). Esto es exactamente qué riesgos siguen abiertos con ese modelo y cómo los cubre OpenShift. Toca cada fila para ver el detalle.</p>
+  <div style="background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);overflow:hidden;">
+    <div class="vm-grid" id="vmGrid">
+      <div class="vm-row vm-header">
+        <div class="vm-cell">Criterio</div>
+        <div class="vm-cell">VMs tradicionales</div>
+        <div class="vm-cell">OpenShift + Contenedores</div>
       </div>
-      <div class="hw-grid" id="hwGrid"></div>
     </div>
   </div>
-</header>
+</div></div>
 
-<!-- ================= 00 ================= -->
-<section class="chapter" id="ch00">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-00</span><span class="chapter-kicker">Cómo leer este manifiesto</span></div>
-    <h2>Una idea que vas a repetir 40 veces</h2>
-    <p class="chapter-lede">La palabra "contenedor" en software no es una metáfora forzada: es literalmente el mismo concepto que un contenedor de carga marítima. Un contenedor de 40 pies cabe igual en un barco, un tren o un camión sin que nadie tenga que reempacar la carga. Un contenedor de software empaqueta tu aplicación con todo lo que necesita para correr, y por eso corre igual en tu laptop, en un servidor on-premise o en cualquier nube. Esa es la idea madre de todo lo que sigue.</p>
-    <div class="analogy">
-      <b>Por qué este puerto, y no otra analogía</b>
-      Kubernetes organiza contenedores. OpenShift es la terminal portuaria completa — grúas, aduana, seguridad, oficina de turnos — que opera esos contenedores sin que tú tengas que construir la terminal desde cero. Cada capítulo de abajo va a usar esta misma escena.
-    </div>
+<!-- ═══════ S13: S2I DEMO ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-13</span><span class="chapter-kicker">Día 2 · El efecto WOW</span></div>
+  <h2>La demo que cierra el deal: S2I</h2>
+  <p class="lede">Source-to-Image es el flujo nativo de OpenShift que construye una imagen de contenedor directamente desde el código fuente — sin escribir un Dockerfile.</p>
+  <div class="analogy"><b>Analogía</b>Una máquina de empacado automático: metes la carga suelta (tu código) por un lado, y por el otro sale un contenedor estándar, sellado, listo para subir a cualquier barco. Nadie lo empacó a mano.</div>
+  <div class="stepper" id="stepDots"></div>
+  <div class="step-panel" id="stepPanel"></div>
+  <div class="step-nav">
+    <button class="nav-btn" id="stepPrev" disabled>← Anterior</button>
+    <button class="nav-btn" id="stepNext">Siguiente →</button>
   </div>
-</section>
-
-<!-- ================= 01 ================= -->
-<section class="chapter" id="ch01">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-01</span><span class="chapter-kicker">Día 1 · El problema antes del producto</span></div>
-    <h2>El dolor real que resuelve esto</h2>
-    <p class="chapter-lede">Antes de hablar de tecnología, la capacitación arranca con el dolor del cliente. Si no entiendes este dolor, vendes características; si lo entiendes, vendes alivio.</p>
-    <div class="grid3">
-      <div class="card"><div class="stat-num">83%</div><div class="stat-label">de los proyectos Kubernetes fallan en producción por falta de expertise operativo</div></div>
-      <div class="card"><div class="stat-num">4-6</div><div class="stat-label">semanas es el despliegue promedio sin una plataforma gestionada</div></div>
-      <div class="card"><div class="stat-num">60%</div><div class="stat-label">del tiempo de los ingenieros se pierde en infraestructura, no en código</div></div>
-    </div>
-    <div class="analogy">
-      <b>Analogía</b>
-      Comprar un motor de barco no te convierte en una naviera. Necesitas tripulación certificada, rutas, permisos de puerto y seguro. Kubernetes es el motor; sin lo demás, cada despliegue es zarpar sin mapa.
-    </div>
-    <h3 style="font-size:18px; margin:28px 0 12px;">Y la adopción de contenedores va para arriba, no para abajo</h3>
-    <p style="font-size:14px;">Porcentaje de empresas que usan contenedores para proyectos o apps: hoy, en un año, y en más de dos años.</p>
-    <div class="grid3" style="margin-top:14px;">
-      <div class="card" style="text-align:center;"><div class="stat-num" style="color:var(--ink-faint);">24%</div><div class="stat-label">Hoy</div></div>
-      <div class="card" style="text-align:center;"><div class="stat-num" style="color:var(--blue);">30%</div><div class="stat-label">En un año</div></div>
-      <div class="card" style="text-align:center;"><div class="stat-num" style="color:var(--red);">50%</div><div class="stat-label">En 2+ años</div></div>
-    </div>
+  <div class="stopwatch">
+    <div><div class="sw-time" id="swTime">00:00</div><div class="sw-label">Meta: cerrar la demo en menos de 8:00 — si tardas 20 min, el efecto WOW se convierte en "meh"</div></div>
+    <button class="sw-btn" id="swStart">▶ Iniciar</button>
+    <button class="sw-btn" id="swStop">⏸ Pausar</button>
+    <button class="sw-btn" id="swReset">↺ Reiniciar</button>
   </div>
-</section>
+</div></div>
 
-<!-- ================= 02 ================= -->
-<section class="chapter" id="ch02">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-02</span><span class="chapter-kicker">Lo básico, sin saltarse nada</span></div>
-    <h2>Contenedores y Kubernetes, desde cero</h2>
-    <p class="chapter-lede">Un contenedor empaqueta tu aplicación con sus dependencias para que corra igual en cualquier lado. Kubernetes es el sistema que decide dónde poner cada contenedor, cuántas copias mantener vivas, y qué hacer si uno se cae. Nació en Google y es open source.</p>
-    <div class="analogy">
-      <b>Analogía del patio de grúas</b>
-      Si tienes 5 contenedores en el patio, no necesitas un sistema complejo: los acomodas a mano. Pero si tienes 5,000 contenedores moviéndose todo el día, necesitas grúas automatizadas que sepan qué contenedor va en qué barco, cuáles están dañados y cuáles hay que reemplazar. Eso es Kubernetes: el cerebro que mueve los contenedores sin que un humano lo haga uno por uno.
-    </div>
-    <h3 style="font-size:18px; margin:28px 0 12px;">Pero "Kubernetes is not enough"</h3>
-    <p style="font-size:14px; max-width:680px;">Kubernetes mueve y organiza contenedores. Pero no trae de fábrica: una plataforma de desarrollo, un registro de imágenes, pipelines de CI/CD, un portal de desarrolladores, dashboards de monitoreo avanzados, ni un modelo de seguridad empresarial completo. Eso lo tienes que armar tú, integrando muchas piezas sueltas — automatización, monitorización, malla de servicios, herramientas de productividad — para que sea apta para una empresa real.</p>
-    <div class="grid2" style="margin-top:18px;">
-      <div class="card"><h4>Kubernetes te da</h4><p>El motor de orquestación: decide dónde corre cada contenedor y lo mantiene vivo.</p></div>
-      <div class="card" style="border-color:var(--red-dim);"><h4>Kubernetes NO te da</h4><p>Consola visual, registry, CI/CD, portal de devs, seguridad de nivel empresa, soporte con SLA.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 03 ================= -->
-<section class="chapter" id="ch03">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-03</span><span class="chapter-kicker">El producto</span></div>
-    <h2>OpenShift: la terminal portuaria, no solo el motor</h2>
-    <p class="chapter-lede">Red Hat OpenShift es la plataforma de contenedores empresarial número uno del mercado, construida sobre Kubernetes pero diseñada para usarse desde el día uno: sin fricciones, sin configurar durante semanas, sin curva de aprendizaje brutal.</p>
-    <div class="grid3">
-      <div class="card"><div class="stat-num">3,500+</div><div class="stat-label">clientes enterprise globales</div></div>
-      <div class="card"><div class="stat-num">10+</div><div class="stat-label">años liderando el mercado de contenedores</div></div>
-      <div class="card"><div class="stat-num">$1B+</div><div class="stat-label">en suscripciones anuales</div></div>
-    </div>
-    <div class="analogy">
-      <b>Tip de venta real, tal cual lo dieron en la charla</b>
-      Cuando el cliente diga "ya tenemos Kubernetes", pregúntale: ¿quién gestiona los parches? ¿cuánto tarda un despliegue? Esas dos respuestas abren la conversación hacia OpenShift, porque ahí es donde el cliente descubre que "tener Kubernetes" y "tener una terminal operando" son cosas distintas.
-    </div>
-
-    <h3 style="font-size:18px; margin:28px 0 12px;">Y si el cliente responde... — toca cada pregunta para ver qué podría contestar y cómo seguir</h3>
-    <p style="font-size:14px; max-width:680px; margin-bottom:16px;">Hacer la pregunta correcta no sirve de nada si no sabes qué hacer con la respuesta. Esto es lo que probablemente vas a escuchar, y cómo seguir la conversación en cada caso.</p>
-    <div id="saleQA"></div>
-
-    <h3 style="font-size:20px; margin:36px 0 14px;">¿Cuándo realmente conviene OpenShift? — toca cada tarjeta</h3>
-    <p style="font-size:14px; margin-bottom:16px;">No es para todos los clientes. El material es honesto en marcar los cuatro escenarios donde el valor es real.</p>
-    <div class="grid2" id="whenGrid"></div>
-  </div>
-</section>
-
-<!-- ================= 04 ================= -->
-<section class="chapter" id="ch04">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-04</span><span class="chapter-kicker">No te confundas de versión</span></div>
-    <h2>El mapa de ediciones</h2>
-    <p class="chapter-lede">"OpenShift" no es una sola cosa que se compra. Hay variantes gestionadas en la nube y variantes que el cliente opera él mismo, y dentro de cada grupo hay niveles. Esto es justo lo que necesitas dominar antes de cotizar nada.</p>
-
-    <h3 style="font-size:18px; margin:24px 0 14px;">Self-managed: una escalera, no una lista — haz clic en cada escalón</h3>
-    <div class="ladder" id="ladder"></div>
-
-    <h3 style="font-size:18px; margin:32px 0 14px;">¿Y si el cliente está en otra nube? La comparativa rápida</h3>
-    <div class="filterbar" id="editionFilter">
-      <button class="filter-btn active" data-f="all">Todas</button>
-      <button class="filter-btn" data-f="cloud">Solo gestionadas en nube</button>
-      <button class="filter-btn" data-f="raw">Solo Kubernetes nativo</button>
-    </div>
-    <table class="cmp" id="editionTable">
-      <thead><tr><th>Opción</th><th>Sensación</th><th>Mejor para</th></tr></thead>
-      <tbody></tbody>
-    </table>
-    <div class="analogy">
-      <b>La diferencia clave en una frase</b>
-      OKD es construir tu propio patio de grúas desde cero. ARO/ROSA es alquilar una terminal de OpenShift ya operando, dentro de Azure o AWS. AKS/EKS es Kubernetes nativo de la nube: liviano y flexible, pero con menos plataforma integrada que OpenShift.
-    </div>
-  </div>
-</section>
-
-<!-- ================= 05 ================= -->
-<section class="chapter" id="ch05">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-05</span><span class="chapter-kicker">La pieza que vendemos nosotros</span></div>
-    <h2>ROKS: OpenShift como servicio gestionado en IBM Cloud</h2>
-    <p class="chapter-lede">ROKS le quita al cliente la carga operativa más pesada. IBM Cloud gestiona la infraestructura crítica para que el cliente se concentre en lo que genera valor: sus aplicaciones.</p>
-
-    <h3 style="font-size:18px; margin:24px 0 14px;">¿Quién controla qué? — toca un cuadrante</h3>
-    <div class="quad-wrap" id="quadWrap"></div>
-    <p class="quad-axis">↑ Control IBM &nbsp;&nbsp;·&nbsp;&nbsp; ↓ Control Cliente &nbsp;&nbsp;·&nbsp;&nbsp; ← Integración Cliente &nbsp;&nbsp;·&nbsp;&nbsp; Responsabilidad Compartida →</p>
-    <div class="quad-detail" id="quadDetail">Toca cualquier cuadrante para ver el detalle.</div>
-
-    <h3 style="font-size:18px; margin:32px 0 14px;">Tres formas de rentar espacio en el puerto</h3>
-    <div class="grid3" id="infraCards"></div>
-    <div class="analogy" id="infraDetail">
-      <b>Selecciona una opción arriba</b>
-      Cada tipo de infraestructura es como rentar un tipo distinto de espacio en el puerto: compartido, privado, o construir tu propio muelle.
-    </div>
-  </div>
-</section>
-
-<!-- ================= 06 ================= -->
-<section class="chapter" id="ch06">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-06</span><span class="chapter-kicker">Seguridad y redes</span></div>
-    <h2>Del portón principal al pasillo interno</h2>
-    <p class="chapter-lede">La objeción más común de cualquier cliente es "ya tenemos firewall". La respuesta correcta no es discutir el firewall — es explicar qué pasa <i>dentro</i> de la terminal una vez que algo ya entró.</p>
-    <div class="analogy">
-      <b>Toca la objeción</b>
-      <span id="objectionText" style="cursor:pointer; text-decoration:underline; color:var(--paper);">"Ya tenemos un firewall, ¿por qué necesitamos esto?" (toca para ver la respuesta)</span>
-      <div id="objectionAnswer" style="display:none; margin-top:10px;">Un firewall protege el portón principal del puerto. Calico — la red Zero Trust que ROKS integra de fábrica — pone un guardia en cada pasillo, cada bodega y cada grúa, controlando exactamente qué contenedor puede hablar con cuál. El 70% de los ataques modernos ocurren en el movimiento lateral dentro del cluster, no en el portón.</div>
-    </div>
+<!-- ═══════ S14: ECOSISTEMA + DAYTWO ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-14</span><span class="chapter-kicker">Modelo de colaboración</span></div>
+  <h2>El ecosistema gana-gana</h2>
+  <p class="lede">Tres actores con roles distintos y complementarios. Ninguno compite con el otro. Toca cada pestaña.</p>
+  <div class="eco-tabs" id="ecoTabs"></div>
+  <div id="ecoPanels"></div>
+  <div class="daytwo-box">
+    <h3>¿Quién es DayTwo y qué hace exactamente?</h3>
+    <p style="font-size:13px;color:var(--ink-soft);margin-bottom:14px;">DayTwo es un integrador técnico especializado en Red Hat y OpenShift. No es competencia del canal — es su brazo técnico cuando la complejidad supera lo que el equipo comercial puede ejecutar solo.</p>
     <div class="grid2">
-      <div class="card"><h4>Calico incluido, sin costo extra</h4><p>Segmentación de red por namespace, políticas de denegación por defecto, visibilidad de flujos en tiempo real. También resuelve el agotamiento de IPs con redes secundarias y CIDR personalizado, sin rediseñar la red on-premise del cliente.</p></div>
-      <div class="card"><h4>SCC, Image Scanning y Compliance Operator</h4><p>SCC controla qué puede hacer cada contenedor (usuarios, capacidades, volúmenes). Cada imagen que entra se escanea automáticamente por vulnerabilidades. El Compliance Operator automatiza la verificación contra CIS, PCI-DSS y HIPAA, con reportes auditables sin trabajo manual.</p></div>
+      <div class="card"><h4>Lo que DayTwo hace</h4><ul class="plain"><li>Diseño de arquitectura OpenShift según el cliente real</li><li>Instalación y configuración del clúster (on-prem o cloud)</li><li>Migración de apps monolíticas a contenedores</li><li>Capacitación técnica al equipo del cliente</li><li>Soporte post-implementación especializado</li></ul></div>
+      <div class="card"><h4>Lo que el canal (nosotros) mantiene</h4><ul class="plain"><li>La relación comercial con el cliente</li><li>La venta y renovación de licencias Red Hat</li><li>El consumo mensual de IBM Cloud</li><li>El referral fee por servicios de DayTwo</li><li>La propiedad de la oportunidad</li></ul></div>
     </div>
+    <div class="callout" style="margin-top:14px;"><b>La clave que muchos canales no entienden:</b> presentar a DayTwo desde el primer discovery técnico, no como rescate cuando algo sale mal. Las oportunidades donde DayTwo entra desde el inicio se cierran significativamente más rápido. No pierdes el deal — lo asegugas.</div>
+    <div class="card" style="margin-top:12px;border-color:var(--amber);"><h4>El dato del revenue</h4><p>Un cliente mediano (50-200 workers) genera entre $8,000 y $25,000 USD mensuales en consumo de IBM Cloud. El margen recurrente del canal sobre ese consumo es mensual y predecible — no es un proyecto puntual, es una renta.</p></div>
   </div>
-</section>
+</div></div>
 
-<!-- ================= 07 ================= -->
-<section class="chapter" id="ch07">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-07</span><span class="chapter-kicker">Cómo se construye</span></div>
-    <h2>Instalación y arquitectura del clúster</h2>
-    <p class="chapter-lede">Antes de dimensionar nada, hay que decidir cómo se instala. Responde estas dos preguntas y mira qué método te recomienda.</p>
-    <div class="decision-box">
-      <div class="dq">
-        <p>1. ¿Qué prioriza el cliente?</p>
-        <div class="dq-opts">
-          <button class="dopt" data-q="1" data-v="speed">Velocidad y poca complejidad operativa</button>
-          <button class="dopt" data-q="1" data-v="control">Control total e integración con su infraestructura existente</button>
-        </div>
-      </div>
-      <div class="dq">
-        <p>2. ¿Necesita rendimiento físico máximo (GPU, baja latencia, virtualización pesada) sin hipervisor de por medio?</p>
-        <div class="dq-opts">
-          <button class="dopt" data-q="2" data-v="yes">Sí, hardware dedicado al límite</button>
-          <button class="dopt" data-q="2" data-v="no">No, una nube soportada está bien</button>
-        </div>
-      </div>
-      <div class="result-box" id="deployResult">Responde las dos preguntas para ver la recomendación.</div>
-    </div>
+<!-- ═══════ S15: RED FLAGS + CHECKLIST ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-15</span><span class="chapter-kicker">Escalada inteligente</span></div>
+  <h2>¿Cuándo llamar a DayTwo?</h2>
+  <p class="lede">Marca lo que el cliente ya te dijo en conversación real. El veredicto aparece abajo.</p>
+  <div id="flagList"></div>
+  <div class="verdict ok" id="verdict">Sin señales marcadas. El equipo del canal puede manejarlo directamente.</div>
+  <hr class="sep-line">
+  <h3 style="font-size:17px;margin:0 0 12px;">Tu checklist de habilitación</h3>
+  <div id="checkList"></div>
+</div></div>
 
-    <h3 style="font-size:18px; margin:36px 0 14px;">La arquitectura base — toca cada bloque</h3>
-    <p style="font-size:14px; max-width:680px;">OpenShift recomienda una estructura simétrica de 3+3+3 para alta disponibilidad. No es un capricho: cada grupo cumple un rol distinto.</p>
-    <div class="arch-grid">
-      <div class="arch-col">
-        <h4>Control Plane (3 nodos)</h4>
-        <div class="arch-box cp" data-arch="cp">API Server · Scheduler · Controllers · etcd</div>
-      </div>
-      <div class="arch-col">
-        <h4>Infraestructura (3 nodos)</h4>
-        <div class="arch-box infra" data-arch="infra">Ingress · Registry · Monitoring · Logging</div>
-      </div>
-      <div class="arch-col">
-        <h4>Workers (3+ nodos)</h4>
-        <div class="arch-box wk" data-arch="wk">Aquí corren las apps del cliente</div>
-      </div>
-    </div>
-    <div class="arch-detail" id="archDetail">Toca un bloque para ver para qué sirve y cuándo crece.</div>
-  </div>
-</section>
+<!-- ═══════ S16: QUIZ ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-16</span><span class="chapter-kicker">Última parada</span></div>
+  <h2>Ponte a prueba</h2>
+  <p class="lede">Cinco preguntas. Si las contestas bien, saliste sabiendo lo mismo que alguien que se sentó dos días en la capacitación.</p>
+  <div class="quiz-score" id="quizScore">0 / 5 correctas</div>
+  <div id="quizBox"></div>
+</div></div>
 
-<!-- ================= 08 — SIZING ================= -->
-<section class="chapter" id="ch08">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-08</span><span class="chapter-kicker">El bloque más técnico — léelo dos veces</span></div>
-    <h2>Sizing: ¿cuántos barcos necesitas?</h2>
-    <p class="chapter-lede"><b style="color:var(--paper);">100 aplicaciones no son 100 contenedores.</b> Una sola app suele tener frontend, backend y un worker, y cada uno corre con 2 réplicas para alta disponibilidad. Eso ya son 6 contenedores por una sola app. El número de aplicaciones es solo el punto de partida, nunca el dato final de sizing.</p>
-    <div class="analogy">
-      <b>Analogía</b>
-      No preguntas "¿cuántas cajas tengo?" para saber cuántos barcos necesitas. Preguntas cuánto pesa cada caja, cuántas cajas entran por barco, y cuánto margen dejas para la próxima temporada alta. Eso es exactamente lo que hace esta calculadora.
-    </div>
-
-    <div class="calc-box">
-      <div class="calc-row">
-        <label>Número de aplicaciones <span class="val" id="lblApps">100</span></label>
-        <input type="range" id="inApps" min="10" max="300" step="10" value="100">
-      </div>
-      <div class="calc-row">
-        <label>Complejidad típica de tus apps</label>
-        <select id="inProfile">
-          <option value="2.5">Frontend simple (≈2.5 pods/app)</option>
-          <option value="3">Backend / API (≈3 pods/app)</option>
-          <option value="8" selected>App completa: frontend + backend + worker (≈8 pods/app)</option>
-          <option value="12">Microservicio empresarial con HA fuerte (≈12 pods/app)</option>
-        </select>
-      </div>
-      <div class="calc-row">
-        <label>Densidad por worker (referencia preventa) <span class="val" id="lblDensity">120</span> pods/worker</label>
-        <input type="range" id="inDensity" min="80" max="200" step="10" value="120">
-        <p class="small" style="margin-top:6px;">El límite técnico de OpenShift es 250 pods por nodo — pero diseñar al límite es un error. 100–150 es la referencia conservadora de preventa.</p>
-      </div>
-      <div class="calc-flags">
-        <label class="flag"><input type="checkbox" id="inHA" checked> Diseñar para alta disponibilidad (+1 worker, N+1)</label>
-        <label class="flag"><input type="checkbox" id="inGrowth" checked> Agregar headroom de crecimiento (+25%)</label>
-      </div>
-
-      <div class="receipt" id="receipt"></div>
-      <div class="ships" id="ships"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 09 — TCO ================= -->
-<section class="chapter" id="ch09">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-09</span><span class="chapter-kicker">Análisis de TCO</span></div>
-    <h2>¿Comprar el puerto o alquilar el muelle?</h2>
-    <p class="chapter-lede">On-premise es CAPEX: inversión grande al inicio, después solo mantenimiento. Cloud/ROKS es OPEX: poca inversión inicial, pero el costo crece con el tiempo según el consumo. Ninguno es "el correcto" — depende de cuántos años vas a operar y qué tan estable es la carga.</p>
-    <div class="calc-row" style="max-width:420px;">
-      <label>Años de operación <span class="val" id="lblYears">5</span></label>
-      <input type="range" id="inYears" min="1" max="15" step="1" value="5">
-    </div>
-    <div class="tco-bars">
-      <div class="tco-col">
-        <div class="tco-bar-track"><div class="tco-bar onprem" id="barOnprem"></div></div>
-        <div class="tco-num" id="numOnprem"></div>
-        <div class="small">On-premise (CAPEX)</div>
-      </div>
-      <div class="tco-col">
-        <div class="tco-bar-track"><div class="tco-bar cloud" id="barCloud"></div></div>
-        <div class="tco-num" id="numCloud"></div>
-        <div class="small">Cloud / ROKS (OPEX)</div>
-      </div>
-    </div>
-    <div class="result-box" id="tcoVerdict" style="max-width:560px; margin:0 auto;"></div>
-    <p class="small" style="text-align:center; margin-top:14px;">Esto es ilustrativo, no una cotización real — la idea es que veas el cruce: a pocos años, cloud casi siempre gana en costo y agilidad; a muchos años con carga estable, lo ya invertido en on-premise empieza a pagarse solo.</p>
-  </div>
-</section>
-
-<!-- ================= 10 — STORAGE ================= -->
-<section class="chapter" id="ch10">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-10</span><span class="chapter-kicker">Infraestructura y persistencia</span></div>
-    <h2>¿Qué pasa con la carga cuando reciclan el contenedor?</h2>
-    <p class="chapter-lede">Los pods en OpenShift son efímeros: pueden reiniciarse, moverse o destruirse en cualquier momento. Si tu app guarda datos dentro del contenedor, esos datos se pierden cuando el contenedor se recicla — a menos que los hayas guardado en una bodega externa.</p>
-    <div class="pod-stage">
-      <div class="pod-box" id="podBox"><div class="icon">📦</div><span>Pod activo</span></div>
-      <div class="arrow">→</div>
-      <div class="locker" id="lockerBox"><span>🔒</span><span>Bodega externa (PV)</span></div>
-    </div>
-    <div style="text-align:center; margin-bottom:24px;">
-      <label class="flag" style="justify-content:center; display:inline-flex;"><input type="checkbox" id="pvOn" checked> Persistent Volume conectado</label>
-      &nbsp;&nbsp;
-      <button class="sw-btn" id="recycleBtn">♻️ Reciclar este pod</button>
-      <p class="small" id="podMsg" style="margin-top:10px;"></p>
-    </div>
-
-    <div class="grid2">
-      <div class="card"><h4>RWO — ReadWriteOnce</h4><p>Como un casillero privado: un solo nodo/pod lo monta a la vez. Ideal para bases de datos y apps con estado.</p></div>
-      <div class="card"><h4>RWX — ReadWriteMany</h4><p>Como una bodega compartida con varios muelles de carga: múltiples pods/nodos acceden al mismo volumen a la vez. Ideal para archivos compartidos, logs o apps con acceso simultáneo.</p></div>
-    </div>
-    <p class="small" style="margin-top:16px;">Preguntas que cualquier preventa debería hacer antes de hablar de storage: ¿la app necesita persistencia? ¿necesita storage compartido entre pods? ¿qué performance requiere (IOPS, latencia, throughput)? ¿el cliente ya tiene Dell, HPE, NetApp u otro storage integrable vía CSI? ¿necesita backup, snapshot, replicación o DR?</p>
-  </div>
-</section>
-
-<!-- ================= 11 — S2I ================= -->
-<section class="chapter" id="ch11">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-11</span><span class="chapter-kicker">Día 2 · El efecto WOW</span></div>
-    <h2>La demo que cierra el deal: Source-to-Image</h2>
-    <p class="chapter-lede">S2I es el flujo nativo de OpenShift que construye una imagen de contenedor directamente desde el código fuente, sin escribir un Dockerfile.</p>
-    <div class="analogy">
-      <b>Analogía</b>
-      Es como una máquina de empacado automático en el puerto: metes la carga suelta (tu código) por un lado, y por el otro sale un contenedor estándar, sellado y listo para subir a cualquier barco. Nadie tuvo que empacarlo a mano.
-    </div>
-
-    <div class="stepper" id="stepperDots"></div>
-    <div class="step-panel" id="stepPanel"></div>
-    <div class="step-nav">
-      <button class="nav-btn" id="stepPrev" disabled>← Anterior</button>
-      <button class="nav-btn" id="stepNext">Siguiente paso →</button>
-    </div>
-
-    <div class="stopwatch">
-      <div>
-        <div class="sw-time" id="swTime">00:00</div>
-        <div class="sw-label">Tu cronómetro de práctica — la meta es cerrar bajo 8:00</div>
-      </div>
-      <button class="sw-btn" id="swStart">▶ Iniciar</button>
-      <button class="sw-btn" id="swStop">⏸ Pausar</button>
-      <button class="sw-btn" id="swReset">↺ Reiniciar</button>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 12 — BUSINESS MODEL ================= -->
-<section class="chapter" id="ch12">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-12</span><span class="chapter-kicker">Modelo de colaboración estratégica</span></div>
-    <h2>El ecosistema gana-gana</h2>
-    <p class="chapter-lede">Tres actores, tres roles que se complementan en vez de competir. Toca cada uno para ver qué hace y de dónde saca su margen.</p>
-    <div class="eco-tabs" id="ecoTabs"></div>
-    <div id="ecoPanels"></div>
-    <div class="card" style="margin-top:20px; border-color:var(--amber);">
-      <h4>El dato que importa</h4>
-      <p>Un cliente de tamaño mediano (50-200 workers) genera entre $8,000 y $25,000 USD mensuales en consumo de IBM Cloud. El margen recurrente del canal sobre ese consumo es significativo y predecible — esto no es un proyecto puntual, es una renta mensual.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 13 — DAYTWO ================= -->
-<section class="chapter" id="ch13">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-13</span><span class="chapter-kicker">Escalada inteligente</span></div>
-    <h2>¿Cuándo llamar a DayTwo?</h2>
-    <p class="chapter-lede">No es perder el deal — es asegurar el éxito del cliente y proteger tu reputación. Marca lo que tu cliente ya te dijo en una conversación real y mira el veredicto.</p>
-    <div class="flag-list" id="flagList"></div>
-    <div class="verdict ok" id="verdict">Sin señales marcadas todavía. El equipo del canal puede manejar esto directamente.</div>
-  </div>
-</section>
-
-<!-- ================= 14 — CHECKLIST ================= -->
-<section class="chapter" id="ch14">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-14</span><span class="chapter-kicker">Del conocimiento a la acción</span></div>
-    <h2>Tu checklist de habilitación</h2>
-    <p class="chapter-lede">El conocimiento sin ejecución no genera pipeline. Esto es exactamente lo que TD SYNNEX deja como tarea — márcalo a medida que avances.</p>
-    <ul class="check-list" id="checkList"></ul>
-  </div>
-</section>
-
-<!-- ================= 15 — QUIZ ================= -->
-<section class="chapter" id="ch15">
-  <div class="wrap">
-    <div class="chapter-tag"><span class="chapter-id">CONT-15</span><span class="chapter-kicker">Última parada</span></div>
-    <h2>Ponte a prueba</h2>
-    <p class="chapter-lede">Cinco preguntas. Si las contestas bien, saliste de este puerto sabiendo lo mismo que alguien que se sentó dos días en la capacitación.</p>
-    <div class="quiz-score" id="quizScore">0 / 5 correctas</div>
-    <div id="quizBox"></div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <p>Basado en el material "OpenShift para Preventas: De Cero a Demo en IBM Cloud" — TD SYNNEX · Red Hat · IBM Cloud. Reconstruido para Coresolutions.</p>
-  </div>
-</footer>
+</div><!-- /track -->
+</div><!-- /viewport -->
 
 <script>
-/* ===================== DATA ===================== */
-function esc(s){ return String(s).replace(/"/g,'&quot;'); }
+/* ═══════════════════════ DATA ═══════════════════════ */
+function esc(s){ return String(s).replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 
-const saleQA = [
-  {
-    q: "¿Quién gestiona los parches?",
-    cases: [
-      {client:"Los gestiona nuestro equipo de TI manualmente.", reply:"Ahí está el riesgo operativo exacto del que habla el 83% de fallos en producción. Con ROKS, IBM gestiona los parches del control plane — tu equipo deja de pelear con actualizaciones y se enfoca en aplicaciones."},
-      {client:"Sinceramente no estamos seguros / hace tiempo no actualizamos.", reply:"Eso es una bandera roja de seguridad: versiones desactualizadas significan vulnerabilidades conocidas sin parchar. Aquí entra el argumento de Image Scanning y el Compliance Operator — automatizan justo lo que hoy no se está haciendo."},
-      {client:"Tenemos un equipo dedicado a eso.", reply:"Buena señal de madurez. La pregunta de seguimiento es cuánto le cuesta a la empresa mantener ese equipo dedicado a una tarea que IBM puede absorber — reposiciona la conversación de 'seguridad' a 'costo de oportunidad'."},
-    ]
-  },
-  {
-    q: "¿Cuánto tarda un despliegue?",
-    cases: [
-      {client:"Días o semanas.", reply:"Coincide con el dato de la capacitación: 4-6 semanas es el promedio sin plataforma gestionada. Aquí es directo: muestra la demo S2I de menos de 5 minutos como contraste — el efecto WOW nace exactamente de esa brecha."},
-      {client:"Depende, no hay un proceso estándar.", reply:"Eso señala falta de estandarización, no falta de velocidad puntual. S2I y los Pipelines/GitOps de OpenShift estandarizan el flujo de build y deploy, así que el tiempo deja de depender de quién lo haga."},
-      {client:"Unas horas o minutos, ya estamos bastante automatizados.", reply:"Si ya son rápidos, el ángulo de venta no es velocidad — es seguridad, soporte enterprise y reducción de carga operativa. Pregunta quién responde si esa automatización falla a las 2am: ahí entra el SLA de Red Hat."},
-    ]
-  },
+const SLIDES = [
+  {tag:'CONT-00', title:'Bienvenida'},
+  {tag:'CONT-01', title:'El dolor del cliente'},
+  {tag:'CONT-02', title:'Kubernetes desde cero'},
+  {tag:'CONT-03', title:'OpenShift + ¿Qué son los parches?'},
+  {tag:'CONT-04', title:'¿Cuándo conviene OpenShift?'},
+  {tag:'CONT-05', title:'Mapa de ediciones'},
+  {tag:'CONT-06', title:'ROKS de cerca'},
+  {tag:'CONT-07', title:'Seguridad y redes'},
+  {tag:'CONT-08', title:'Instalación y arquitectura'},
+  {tag:'CONT-09', title:'Sizing: cuántos barcos'},
+  {tag:'CONT-10', title:'Comparación económica 3-vías'},
+  {tag:'CONT-11', title:'Storage y persistencia'},
+  {tag:'CONT-12', title:'OpenShift vs VMs'},
+  {tag:'CONT-13', title:'Demo S2I — el efecto WOW'},
+  {tag:'CONT-14', title:'Ecosistema + DayTwo'},
+  {tag:'CONT-15', title:'Red Flags y Checklist'},
+  {tag:'CONT-16', title:'Quiz final'},
 ];
 
 const features = [
-  {name:"Orquestación de contenedores", both:true, desc:"El núcleo de Kubernetes: decide en qué nodo corre cada contenedor, cuántas réplicas mantener vivas y qué hacer si uno falla. Esto es lo único que el cliente ya tiene cuando dice 'ya tenemos Kubernetes'."},
-  {name:"Consola visual para devs y ops", both:false, desc:"Interfaz web completa para desplegar, monitorear y depurar aplicaciones sin usar kubectl desde una terminal. Es la diferencia visual que impresiona en cualquier demo."},
-  {name:"CI/CD y GitOps nativos", both:false, desc:"OpenShift Pipelines (basado en Tekton) y OpenShift GitOps (basado en Argo CD) vienen integrados de fábrica, sin instalar ni mantener Jenkins u otra herramienta externa."},
-  {name:"Registry de imágenes integrado", both:false, desc:"Un registro de contenedores propio dentro del clúster para guardar las imágenes que construye S2I, sin depender de Docker Hub u otro registry externo."},
-  {name:"Operator Framework", both:false, desc:"Empaqueta tareas operativas complejas (actualizar, escalar, respaldar una base de datos) en 'operadores' reutilizables, en vez de scripts manuales que alguien tiene que mantener."},
-  {name:"Seguridad SCC + escaneo de imágenes", both:false, desc:"Security Context Constraints controla qué puede hacer cada contenedor (usuarios, capacidades, volúmenes); el escaneo automático revisa vulnerabilidades antes de que la imagen llegue a producción."},
-  {name:"Actualizaciones automáticas sin downtime", both:false, desc:"El clúster se actualiza a nuevas versiones de OpenShift de forma orquestada, nodo por nodo, sin que las aplicaciones se caigan durante el proceso."},
-  {name:"Soporte enterprise con SLA", both:false, desc:"Acceso directo a soporte de Red Hat con tiempos de respuesta garantizados — algo que Kubernetes open source, por definición, no incluye."},
+  {name:'Orquestación de contenedores', both:true, desc:'El núcleo de Kubernetes: decide en qué nodo corre cada contenedor, cuántas réplicas mantener vivas y qué hacer si uno falla. Esto es lo único que el cliente ya tiene cuando dice "ya tenemos Kubernetes".'},
+  {name:'Consola visual para devs y ops', both:false, desc:'Interfaz web completa para desplegar, monitorear y depurar aplicaciones sin usar kubectl. Es la diferencia visual que impresiona en cualquier demo.'},
+  {name:'CI/CD y GitOps nativos', both:false, desc:'OpenShift Pipelines (Tekton) y OpenShift GitOps (Argo CD) vienen integrados. Sin instalar ni mantener Jenkins u otra herramienta externa.'},
+  {name:'Registry de imágenes integrado', both:false, desc:'Un registro de contenedores propio dentro del clúster para guardar las imágenes que construye S2I, sin depender de Docker Hub.'},
+  {name:'Operator Framework', both:false, desc:'Empaqueta tareas operativas complejas (actualizar, escalar, respaldar una base de datos) en operadores reutilizables, en vez de scripts manuales.'},
+  {name:'Seguridad SCC + escaneo de imágenes', both:false, desc:'Security Context Constraints controla qué puede hacer cada contenedor; el escaneo automático revisa vulnerabilidades antes de que la imagen llegue a producción.'},
+  {name:'Actualizaciones automáticas sin downtime', both:false, desc:'El clúster se actualiza nodo por nodo sin que las aplicaciones se caigan durante el proceso.'},
+  {name:'Soporte enterprise con SLA', both:false, desc:'Acceso directo a soporte de Red Hat con tiempos de respuesta garantizados — algo que Kubernetes open source no incluye por definición.'},
+];
+
+const saleQA = [
+  {q:'¿Quién gestiona los parches?', cases:[
+    {c:'"Los gestiona nuestro equipo de TI manualmente."', r:'Ahí está el riesgo exacto. Con ROKS, IBM gestiona los parches del control plane — tu equipo deja de pelear con actualizaciones y se enfoca en aplicaciones. El ahorro en tiempo de ingenieros justifica solo el costo.'},
+    {c:'"Sinceramente no estamos seguros / hace tiempo no actualizamos."', r:'Eso es una bandera roja de seguridad: versiones desactualizadas significan vulnerabilidades conocidas sin parchar (CVEs). Aquí entran el Image Scanning y el Compliance Operator — automatizan justo lo que hoy no se está haciendo.'},
+    {c:'"Tenemos un equipo dedicado a eso."', r:'Buena señal de madurez. La pregunta de seguimiento es cuánto le cuesta a la empresa mantener ese equipo en una tarea que IBM puede absorber. Reposiciona la conversación de seguridad a costo de oportunidad: ¿qué podría hacer ese equipo si no tuviera que parchear?'},
+  ]},
+  {q:'¿Cuánto tarda un despliegue?', cases:[
+    {c:'"Días o semanas."', r:'Coincide con el dato de la capacitación: 4-6 semanas es el promedio sin plataforma gestionada. Aquí es directo: muestra la demo S2I de menos de 5 minutos como contraste. El efecto WOW nace de esa brecha.'},
+    {c:'"Depende, no hay un proceso estándar."', r:'Eso señala falta de estandarización, no solo lentitud puntual. S2I y los Pipelines de OpenShift estandarizan el flujo build-deploy, así que el tiempo deja de depender de quién lo ejecute.'},
+    {c:'"Minutos, ya estamos bastante automatizados."', r:'Si ya son rápidos, el ángulo de venta no es velocidad — es seguridad, soporte enterprise y reducción de carga operativa. Pregunta quién responde si esa automatización falla a las 2am. Ahí entra el SLA de Red Hat.'},
+  ]},
 ];
 
 const whenCards = [
-  {t:"Inversión existente en Red Hat", d:"Si la organización ya usa RHEL, Red Hat Satellite y tiene soporte de Red Hat, OpenShift se integra naturalmente y maximiza esa inversión."},
-  {t:"Sectores regulados y compliance", d:"Ideal para entornos con requisitos de certificación: FedRAMP, FIPS y otros marcos que facilitan auditorías — especialmente en sectores públicos y financieros."},
-  {t:"Equipos que empiezan con Kubernetes", d:"La experiencia integrada y las configuraciones predeterminadas reducen la cantidad de decisiones técnicas que un equipo nuevo tiene que tomar."},
-  {t:"Grandes organizaciones con equipo de plataforma", d:"La complejidad de OpenShift se aprovecha mejor cuando hay un equipo dedicado que puede operar, gobernar y estandarizar el entorno para múltiples equipos internos."},
+  {t:'1. Inversión previa en Red Hat (RHEL, Satellite)', d:'Si la organización ya usa RHEL o Satellite, OpenShift se integra naturalmente y maximiza esa inversión. No es "comprar algo nuevo" — es extender lo que ya funciona.'},
+  {t:'2. Sectores regulados (banca, gobierno, utilities)', d:'OpenShift es ideal para entornos con requisitos de certificación: FedRAMP, FIPS, PCI-DSS. El Compliance Operator automatiza la verificación y genera reportes auditables. Para clientes de SBS o gobierno, esto solo ya puede valer el costo de la suscripción.'},
+  {t:'3. Equipos que empiezan con Kubernetes', d:'La experiencia integrada de OpenShift y sus configuraciones predeterminadas reducen la cantidad de decisiones técnicas que un equipo nuevo tiene que tomar. En vez de armar el rompecabezas de herramientas, arrancan operativos desde el día 1.'},
+  {t:'4. Grandes organizaciones con equipo de plataforma', d:'La complejidad de OpenShift se aprovecha mejor cuando hay un equipo dedicado que puede gobernar y estandarizar el entorno para múltiples equipos internos. A menor escala, el valor se diluye.'},
 ];
 
 const ladderTiers = [
-  {name:"Virtualization Engine", badge:"entry · solo VMs", items:[
-    {label:"Red Hat OpenShift Virtualization", desc:"Permite correr máquinas virtuales tradicionales (KVM) dentro del mismo clúster que los contenedores, usando la tecnología KubeVirt. Es la puerta de entrada para clientes que quieren migrar VMs de VMware sin reescribir todo como contenedores."},
-    {label:"Hosting de cargas basadas en VM", desc:"Las máquinas virtuales se tratan como ciudadanos de primera clase del clúster: se pueden iniciar, detener, migrar y respaldar igual que un pod."},
-    {label:"Consola de administración de virtualización", desc:"Interfaz web dedicada para gestionar VMs (crear, clonar, snapshot, migrar en vivo), pensada para que un administrador acostumbrado a vCenter se sienta en terreno conocido."},
+  {name:'Virtualization Engine', badge:'entry · solo VMs', items:[
+    {label:'Red Hat OpenShift Virtualization', desc:'Corre máquinas virtuales tradicionales (KVM) dentro del mismo clúster que los contenedores. La puerta de entrada para clientes que quieren migrar VMs de VMware sin reescribir todo como contenedores.'},
+    {label:'Hosting de cargas basadas en VM', desc:'Las VMs se tratan como ciudadanos de primera clase del clúster: se inician, detienen, migran y respaldan igual que un pod.'},
+    {label:'Consola de administración de virtualización', desc:'Interfaz web dedicada para gestionar VMs (crear, clonar, snapshot, migrar en vivo), pensada para que alguien acostumbrado a vCenter se sienta en terreno conocido.'},
   ]},
-  {name:"Kubernetes Engine", badge:"entry-level", items:[
-    {label:"Todo lo anterior, más:"},
-    {label:"RHEL CoreOS inmutable", desc:"Sistema operativo inmutable diseñado solo para correr contenedores. Se actualiza como una imagen completa en vez de parchar paquete por paquete, reduciendo drift de configuración y superficie de ataque."},
-    {label:"Kubernetes enterprise para apps en contenedores", desc:"La base de Kubernetes con el respaldo y el hardening de Red Hat, lista para producción desde el día uno."},
-    {label:"Capacidades de seguridad fundamentales", desc:"SCC, políticas de red básicas y RBAC ya configurados de fábrica, sin trabajo de configuración manual adicional."},
+  {name:'Kubernetes Engine', badge:'entry-level', items:[
+    {label:'Todo lo anterior, más:', sep:true},
+    {label:'RHEL CoreOS inmutable', desc:'Sistema operativo inmutable para contenedores. Se actualiza como imagen completa — no como parches de paquetes — reduciendo drift de configuración y superficie de ataque.'},
+    {label:'Kubernetes enterprise para contenedores', desc:'La base de Kubernetes con el hardening y respaldo de Red Hat, lista para producción desde el día uno.'},
+    {label:'Capacidades de seguridad fundamentales', desc:'SCC, políticas de red y RBAC ya configurados de fábrica. Sin configuración manual adicional.'},
   ]},
-  {name:"Container Platform", badge:"mid-level", items:[
-    {label:"Todo lo anterior, más:"},
-    {label:"Consola de desarrollador", desc:"Vista de la consola web pensada para developers: muestra la topología de la app, builds, logs y métricas, separada de la vista de administración del clúster que usan los ops."},
-    {label:"OpenShift Serverless", desc:"Basado en Knative. Permite desplegar servicios que escalan a cero cuando no hay tráfico y escalan automáticamente cuando lo hay — se consumen recursos solo cuando algo realmente se está usando."},
-    {label:"OpenShift Service Mesh", desc:"Basado en Istio. Gestiona el tráfico entre microservicios — reintentos automáticos, circuit breakers, cifrado mTLS entre servicios — sin que cada aplicación tenga que programarlo por su cuenta."},
-    {label:"OpenShift Pipelines y GitOps", desc:"Pipelines (basado en Tekton) automatiza build, test y deploy dentro del propio clúster. GitOps (basado en Argo CD) mantiene el clúster sincronizado con lo declarado en un repositorio Git — si alguien cambia algo a mano, GitOps lo revierte."},
+  {name:'Container Platform', badge:'mid-level', items:[
+    {label:'Todo lo anterior, más:', sep:true},
+    {label:'Consola de desarrollador', desc:'Vista de la consola web pensada para developers: topología de la app, builds, logs y métricas. Separada de la vista de administración del clúster.'},
+    {label:'OpenShift Serverless', desc:'Basado en Knative. Servicios que escalan a cero cuando no hay tráfico y suben automáticamente cuando lo hay. Se paga solo lo que se usa.'},
+    {label:'OpenShift Service Mesh', desc:'Basado en Istio. Gestiona tráfico entre microservicios — reintentos automáticos, circuit breakers, cifrado mTLS — sin que cada app tenga que programarlo.'},
+    {label:'OpenShift Pipelines y GitOps', desc:'Pipelines (Tekton) automatiza build+test+deploy dentro del clúster. GitOps (Argo CD) mantiene el clúster sincronizado con un repositorio Git. Si alguien cambia algo a mano, GitOps lo revierte.'},
   ]},
-  {name:"Platform Plus", badge:"recomendado por Red Hat", items:[
-    {label:"Todo lo anterior, más:"},
-    {label:"Advanced Cluster Management", desc:"Gestiona múltiples clústeres OpenShift desde un solo panel: políticas, despliegues y cumplimiento aplicados de forma centralizada. Clave cuando el cliente tiene más de un clúster — dev/test/producción o varias regiones."},
-    {label:"Advanced Cluster Security", desc:"Escaneo de vulnerabilidades, detección de amenazas en tiempo de ejecución y políticas de seguridad consistentes a través de todos los clústeres gestionados, no solo uno."},
-    {label:"Data Foundation Essentials", desc:"Capa de almacenamiento software-defined basada en Ceph/ODF. Da storage persistente a las aplicaciones sin que el cliente compre e integre un array de storage externo."},
-    {label:"Red Hat Quay", desc:"Un registry de imágenes de nivel empresarial: escaneo de vulnerabilidades, geo-replicación y control de acceso granular — mucho más robusto que el registry básico incluido en las ediciones inferiores."},
+  {name:'Platform Plus', badge:'recomendado por Red Hat', items:[
+    {label:'Todo lo anterior, más:', sep:true},
+    {label:'Advanced Cluster Management', desc:'Gestiona múltiples clústeres OpenShift desde un solo panel: políticas, despliegues y cumplimiento centralizados. Clave para clientes con dev/test/producción en clústeres separados.'},
+    {label:'Advanced Cluster Security', desc:'Escaneo de vulnerabilidades, detección de amenazas en runtime y políticas de seguridad consistentes a través de todos los clústeres gestionados.'},
+    {label:'Data Foundation Essentials', desc:'Almacenamiento software-defined basado en Ceph/ODF. Persistent Volumes sin necesidad de comprar un array de storage externo.'},
+    {label:'Red Hat Quay', desc:'Registry de imágenes enterprise: escaneo de vulnerabilidades, geo-replicación y control de acceso granular. Mucho más robusto que el registry básico de ediciones inferiores.'},
   ]},
 ];
 
 const editions = [
-  {opt:"OKD", feel:"DIY / laboratorio potente", best:"Aprender, PoC, homelab, validaciones", cat:"raw", desc:"OKD = Origin Kubernetes Distribution. La versión 100% open source y comunitaria de OpenShift, sin soporte comercial de Red Hat — para quien quiere control total y no necesita SLA."},
-  {opt:"ARO", feel:"OpenShift empresarial sin cargar toda la operación", best:"Empresas en Azure", cat:"cloud", desc:"ARO = Azure Red Hat OpenShift. Servicio gestionado conjuntamente por Microsoft y Red Hat, con soporte de ambos, corriendo dentro de Azure."},
-  {opt:"ROSA", feel:"OpenShift listo para usar en AWS", best:"Empresas AWS que quieren OpenShift", cat:"cloud", desc:"ROSA = Red Hat OpenShift Service on AWS. El equivalente a ROKS pero dentro de AWS, gestionado conjuntamente por Amazon y Red Hat."},
-  {opt:"AKS", feel:"Kubernetes práctico y administrado en Azure", best:"Apps cloud-native en Azure", cat:"raw", desc:"AKS = Azure Kubernetes Service. Kubernetes administrado nativo de Microsoft Azure — no incluye la capa adicional de plataforma que sí trae OpenShift."},
-  {opt:"EKS", feel:"Kubernetes potente y flexible en AWS", best:"Equipos AWS maduros", cat:"raw", desc:"EKS = Elastic Kubernetes Service. Kubernetes administrado nativo de Amazon Web Services — mismo caso que AKS: motor gestionado, sin la plataforma completa de OpenShift encima."},
+  {opt:'OKD', feel:'DIY / laboratorio potente', best:'Aprender, PoC, homelab', cat:'raw', desc:'OKD = Origin Kubernetes Distribution. La versión 100% open source y comunitaria de OpenShift, sin soporte comercial de Red Hat.'},
+  {opt:'ARO', feel:'OpenShift enterprise sin toda la operación', best:'Empresas en Azure', cat:'cloud', desc:'ARO = Azure Red Hat OpenShift. Gestionado conjuntamente por Microsoft y Red Hat, dentro de Azure.'},
+  {opt:'ROSA', feel:'OpenShift listo en AWS', best:'Empresas AWS que quieren OpenShift', cat:'cloud', desc:'ROSA = Red Hat OpenShift Service on AWS. El equivalente de ROKS pero dentro de AWS, gestionado con Amazon y Red Hat.'},
+  {opt:'AKS', feel:'Kubernetes práctico administrado en Azure', best:'Apps cloud-native en Azure', cat:'raw', desc:'AKS = Azure Kubernetes Service. Kubernetes administrado de Microsoft — no incluye la plataforma completa de OpenShift.'},
+  {opt:'EKS', feel:'Kubernetes potente y flexible en AWS', best:'Equipos AWS maduros', cat:'raw', desc:'EKS = Elastic Kubernetes Service. Kubernetes administrado de Amazon — mismo caso que AKS.'},
 ];
 
 const quadrants = [
-  {label:"Nodos maestros y parches\ngestionados por IBM", who:"IBM Gestiona — control alto de IBM, baja integración del cliente", detail:"IBM gestiona nodos Master, actualizaciones, parches de seguridad y disponibilidad de la API de Kubernetes. El cliente no toca esto."},
-  {label:"Red y almacenamiento:\nmodelo compartido", who:"Responsabilidad Compartida — control alto de IBM, alta integración del cliente", detail:"Red y almacenamiento se gestionan bajo un modelo compartido entre IBM y el cliente, según la opción de infraestructura elegida."},
-  {label:"Cliente: aplicaciones\ny despliegues", who:"Control del Cliente — baja integración, decisiones del cliente", detail:"El cliente controla qué aplicaciones se despliegan y cuándo. Esta es la capa donde vive el valor de negocio del cliente."},
-  {label:"Cliente: desarrollo y\noperaciones de apps", who:"Responsabilidad Compartida — control del cliente, alta integración", detail:"El equipo del cliente enfoca el 100% de su tiempo en desarrollo y despliegue de aplicaciones, sin preocuparse por la capa de infraestructura."},
+  {label:'Nodos maestros y parches\ngestionados por IBM', detail:'IBM gestiona nodos Master, actualizaciones, parches y disponibilidad de la API de Kubernetes. El cliente no toca esto.'},
+  {label:'Red y almacenamiento:\nmodelo compartido', detail:'Red y storage bajo modelo compartido entre IBM y el cliente según la opción de infraestructura elegida.'},
+  {label:'Cliente: aplicaciones\ny despliegues', detail:'El cliente controla qué aplicaciones se despliegan y cuándo. Esta es la capa donde vive el valor de negocio del cliente.'},
+  {label:'Cliente: desarrollo y\noperaciones de apps', detail:'El equipo del cliente enfoca el 100% de su tiempo en desarrollo y despliegue — sin preocuparse por la infraestructura subyacente.'},
 ];
 
-const infraOptions = [
-  {t:"Virtual Shared", e:"Económico", d:"Recursos compartidos con aislamiento lógico. Ideal para desarrollo y staging.", analogy:"Es como rentar un casillero en una bodega compartida: barato, suficiente para guardar cosas no críticas."},
-  {t:"Virtual Dedicated", e:"Recomendado para producción", d:"Nodo dedicado al cliente. Mejor rendimiento y aislamiento.", analogy:"Es como rentar tu propia bodega privada dentro del puerto: nadie más mete su carga ahí."},
-  {t:"Bare Metal", e:"Máximo rendimiento", d:"Sin hipervisor. Ideal para cargas intensivas en cómputo o GPU.", analogy:"Es como construir tu propio muelle: máximo control y rendimiento, pero tú respondes por todo lo físico."},
+const infraOpts = [
+  {t:'Virtual Shared', e:'Económico', d:'Recursos compartidos con aislamiento lógico. Ideal para desarrollo y staging.', a:'Como rentar un casillero en una bodega compartida: barato y suficiente para cosas no críticas.'},
+  {t:'Virtual Dedicated', e:'Recomendado para producción', d:'Nodo dedicado. Mejor rendimiento y aislamiento.', a:'Como rentar tu propia bodega privada dentro del puerto: nadie más mete su carga ahí.'},
+  {t:'Bare Metal', e:'Máximo rendimiento', d:'Sin hipervisor. Para cargas intensivas de cómputo o GPU.', a:'Como construir tu propio muelle: máximo rendimiento y control, pero tú respondes por todo lo físico.'},
 ];
 
 const archDetails = {
-  cp:"<b>Control Plane (3 nodos):</b> Aquí viven el API Server, el Scheduler, los Controllers y etcd. Mantienen viva la 'oficina de turnos' del puerto. OpenShift recomienda 3 nodos para alta disponibilidad — si uno cae, los otros dos siguen operando.",
-  infra:"<b>Nodos de Infraestructura (3 nodos):</b> Aquí viven el Ingress, el Registry, el Monitoring y el Logging. Se separan de los workers para que los servicios de plataforma no compitan por recursos con las aplicaciones del cliente.",
-  wk:"<b>Nodos Worker (3+ nodos):</b> Aquí corren las aplicaciones reales del cliente. Crecen según aplicaciones, requests/limits, réplicas, CPU, memoria, storage y tolerancia a fallos. Es el único grupo que normalmente sigue creciendo después del día 1."
+  cp:'<b>Control Plane (3 nodos):</b> API Server, Scheduler, Controllers, etcd. Son la "oficina de turnos" del puerto. OpenShift recomienda 3 nodos para alta disponibilidad — si uno cae, los otros dos siguen operando sin afectar las apps.',
+  infra:'<b>Nodos de Infraestructura (3 nodos):</b> Ingress, Registry, Monitoring, Logging. Se separan de los workers para que los servicios de plataforma no compitan con las aplicaciones reales del cliente.',
+  wk:'<b>Nodos Worker (3+ nodos):</b> Aquí corren las aplicaciones reales. Crecen según aplicaciones, réplicas, CPU, memoria y tolerancia a fallos. Es el único grupo que típicamente sigue creciendo después del día 1.',
 };
 
+const vmRows = [
+  {c:'Tiempo de arranque', vm:'1–5 minutos (boot OS completo)', ocp:'Segundos (imagen de contenedor ya compilada)', d:'Una VM arranca un sistema operativo completo. Un contenedor corre un proceso sobre el kernel del nodo — ya está listo en segundos. Esto impacta directamente el tiempo de recuperación ante fallos.'},
+  {c:'Uso de recursos (RAM/CPU)', vm:'30–50% del recurso va al SO de la VM', ocp:'Casi cero overhead de SO — el proceso usa directamente el kernel', d:'En un nodo con 64GB de RAM, una arquitectura de VMs puede desperdiciar 20–30GB solo en sistemas operativos "huéspedes". Los contenedores comparten el kernel del host y esa memoria queda libre para aplicaciones.'},
+  {c:'Densidad por servidor físico', vm:'4–10 VMs por host típicamente', ocp:'40–100+ contenedores por nodo', d:'La mayor densidad de contenedores significa que el mismo hardware soporta muchas más cargas de trabajo. Directamente reduce el número de servidores físicos necesarios para la misma carga.'},
+  {c:'Portabilidad entre ambientes', vm:'Atada al hipervisor (VMware, Hyper-V, KVM)', ocp:'Corre igual en laptop, on-prem o cualquier nube', d:'El "funciona en mi máquina" desaparece. La imagen de contenedor es idéntica en dev, test y producción. Con VMs, las diferencias entre ambientes son una fuente constante de errores difíciles de reproducir.'},
+  {c:'Tiempo de despliegue', vm:'Minutos a horas (provisionar VM, configurar SO, instalar dependencias)', ocp:'Segundos a minutos con S2I: código → imagen → pod corriendo', d:'Con S2I, el desarrollador hace push a GitHub y en 5 minutos la app está corriendo con URL pública. El pipeline completo es más corto que provisionar una VM vacía.'},
+  {c:'Escalado automático', vm:'Manual o lento (provisionar VM nueva puede tomar minutos)', ocp:'Automático por carga (HPA) — pods nuevos en segundos', d:'HorizontalPodAutoscaler escala el número de réplicas según CPU o métricas customizadas. No hay que provisionar nueva infraestructura — los pods aparecen en los workers existentes en segundos.'},
+  {c:'Parcheo de seguridad', vm:'Requiere actualizar el SO de cada VM individualmente (puede implicar downtime)', ocp:'Imagen inmutable: se rebuilda con la versión nueva y se rota', d:'Con contenedores, un CVE en una dependencia se resuelve haciendo rebuild de la imagen y rotando los pods. Con VMs, hay que conectarse a cada una, aplicar parches, reiniciar y verificar — una por una.'},
+  {c:'Consistencia dev/test/prod', vm:'Alta probabilidad de drift de configuración entre ambientes', ocp:'Imagen idéntica en todos los ambientes — garantía de consistencia', d:'El contenedor que pasa QA es exactamente el mismo byte-por-byte que llega a producción. Con VMs, las diferencias entre ambientes (versiones de librerías, variables de entorno, configs de SO) son una fuente permanente de bugs.'},
+  {c:'Riesgo de vendor lock-in', vm:'Alto: ligada al hipervisor (sobre todo VMware post-Broadcom)', ocp:'Bajo: OpenShift corre en cualquier infraestructura o nube', d:'Con la adquisición de VMware por Broadcom los precios de licencia aumentaron significativamente. OpenShift + contenedores reduce la dependencia de un solo proveedor de hipervisor.'},
+];
+
 const s2iSteps = [
-  {t:"Paso 1 — Abrir la consola web de OpenShift", d:"Mostrar el dashboard principal. Señalar la diferencia visual frente a usar kubectl puro desde una terminal negra. El cliente ya está impresionado antes de que toques código."},
-  {t:"Paso 2 — Crear un nuevo proyecto", d:"Un namespace nuevo, creado en segundos desde la interfaz. Sin YAML, sin terminal."},
-  {t:"Paso 3 — Deploy desde GitHub con S2I", d:"Pegas la URL del repositorio. OpenShift detecta el lenguaje (Node.js, Python, Java) y construye la imagen automáticamente — sin Dockerfile."},
-  {t:"Paso 4 — Ver el pipeline de build en tiempo real", d:"El cliente ve los logs de compilación en vivo. La magia ocurre frente a sus ojos, no detrás de una pantalla de carga."},
-  {t:"Paso 5 — App en producción con URL pública", d:"En menos de 5 minutos, la aplicación está corriendo con una URL accesible. Ese es el momento de silencio que cierra el deal — la conversación cambia de precio a implementación."},
+  {t:'Paso 1 — Consola web de OpenShift', d:'Mostrar el dashboard principal. Señalar la diferencia visual frente a kubectl puro desde una terminal negra. El cliente ya está impresionado antes de que toques código.'},
+  {t:'Paso 2 — Crear un proyecto nuevo', d:'Un namespace nuevo, creado en segundos desde la interfaz gráfica. Sin YAML, sin terminal, sin permisos manuales.'},
+  {t:'Paso 3 — Deploy desde GitHub con S2I', d:'Pegas la URL del repositorio. OpenShift detecta el lenguaje (Node.js, Python, Java) y construye la imagen automáticamente — sin Dockerfile.'},
+  {t:'Paso 4 — Pipeline de build en tiempo real', d:'El cliente ve los logs de compilación en vivo. La magia ocurre frente a sus ojos, no detrás de una pantalla de carga.'},
+  {t:'Paso 5 — App en producción con URL pública', d:'En menos de 5 minutos, la app está corriendo con URL accesible. Ese es el momento de silencio que cierra el deal — la conversación cambia de precio a implementación.'},
 ];
 
 const ecoData = [
-  {k:"td", label:"TD SYNNEX", items:["Provisión de créditos NFR para demos y PoCs","Habilitación técnica y comercial del canal","Soporte en oportunidades estratégicas","Acceso a pricing especial y deal registration"]},
-  {k:"canal", label:"El Canal (nosotros)", items:["Identifica oportunidades y califica al cliente","Vende consumo de IBM Cloud + licencias Red Hat","Genera margen recurrente mensual por consumo","Mantiene la relación comercial con el cliente"]},
-  {k:"daytwo", label:"DayTwo", items:["Arquitectura e implementación técnica","Migraciones y modernización de aplicaciones","Capacitación técnica al equipo del cliente","Soporte post-implementación especializado"]},
+  {k:'td', label:'TD SYNNEX', items:['Provisión de créditos NFR para demos y PoCs','Habilitación técnica y comercial del canal','Soporte en oportunidades estratégicas','Acceso a pricing especial y deal registration']},
+  {k:'canal', label:'El Canal (nosotros)', items:['Identifica oportunidades y califica al cliente','Vende consumo de IBM Cloud + licencias Red Hat','Genera margen recurrente mensual','Mantiene la relación comercial con el cliente','Recibe referral fee por servicios de DayTwo']},
+  {k:'daytwo', label:'DayTwo (técnico)', items:['Arquitectura e implementación del clúster','Migraciones y modernización de aplicaciones','Capacitación técnica al equipo del cliente','Soporte post-implementación especializado','Factura directo al cliente por servicios profesionales']},
 ];
 
 const redFlags = [
-  "Tenemos 200+ microservicios que migrar",
-  "Necesitamos cumplir con PCI-DSS / SOX / HIPAA",
-  "Queremos OpenShift en nuestro propio datacenter",
-  "Nuestro equipo no tiene experiencia en contenedores",
-  "No tenemos ingenieros certificados en OpenShift o Kubernetes en nuestro equipo",
+  '"Tenemos 200+ microservicios que migrar"',
+  '"Necesitamos cumplir con PCI-DSS / SOX / HIPAA"',
+  '"Queremos OpenShift en nuestro propio datacenter"',
+  '"Nuestro equipo no tiene experiencia en contenedores"',
+  '"No tenemos ingenieros certificados en OpenShift o Kubernetes"',
 ];
 
 const checklistItems = [
-  "Cuenta de IBM Cloud activada con créditos NFR",
-  "Cluster ROKS de prueba levantado y funcional",
-  "Demo S2I practicada y cronometrada (menos de 10 min)",
-  "Primera oportunidad calificada identificada con el cliente",
-  "Solicitar créditos NFR a TD SYNNEX",
-  "Crear cuenta IBM Cloud",
-  "Completar el tutorial de ROKS en IBM Docs",
-  "Identificar 3 clientes target para OpenShift",
-  "Agendar primera sesión conjunta con DayTwo",
+  'Cuenta de IBM Cloud activada con créditos NFR',
+  'Cluster ROKS de prueba levantado y funcional',
+  'Demo S2I practicada y cronometrada (menos de 10 min)',
+  'Primera oportunidad calificada identificada',
+  'Solicitar créditos NFR a TD SYNNEX',
+  'Crear cuenta IBM Cloud',
+  'Completar tutorial de ROKS en IBM Docs',
+  'Identificar 3 clientes target para OpenShift',
+  'Agendar primera sesión conjunta con DayTwo',
 ];
 
 const quizData = [
-  {q:"Según la capacitación, ¿qué porcentaje de proyectos Kubernetes fallan en producción por falta de expertise operativo?", opts:["35%","60%","83%","12%"], correct:2, exp:"83% — es la estadística ancla para justificar por qué Kubernetes solo no es suficiente."},
-  {q:"¿Qué significa NFR en los créditos que ofrece TD SYNNEX?", opts:["Not For Resale (créditos de demo, no para reventa productiva)","Network File Routing","New Feature Release","National Framework Requirement"], correct:0, exp:"NFR = Not for Resale. Sirven para levantar un cluster de prueba/demo, no para operar producción del cliente."},
-  {q:"¿Qué hace Calico que un firewall tradicional no hace?", opts:["Cifra el tráfico de internet","Controla el movimiento lateral DENTRO del cluster","Reemplaza la necesidad de IAM","Sirve como balanceador de carga externo"], correct:1, exp:"El firewall protege el perímetro; Calico segmenta y controla qué puede hablar con qué dentro del cluster, donde ocurre el 70% de los ataques modernos."},
-  {q:"¿Cuál es la diferencia entre RWO y RWX?", opts:["RWO es más rápido que RWX en todos los casos","RWO lo monta un solo pod/nodo a la vez; RWX lo comparten varios pods a la vez","RWX es exclusivo de Bare Metal","RWO solo funciona con bases de datos NoSQL"], correct:1, exp:"RWO = ReadWriteOnce (un casillero privado). RWX = ReadWriteMany (bodega compartida)."},
-  {q:"Según las reglas de engagement, ¿cuál de estas frases del cliente debería activar una llamada a DayTwo?", opts:["'Queremos probar OpenShift con un caso simple primero'","'Tenemos 200+ microservicios que migrar'","'Nos interesa ver una demo'","'Queremos saber el precio mensual aproximado'"], correct:1, exp:"Migrar 200+ microservicios requiere metodología y experiencia probada — exactamente el tipo de escala que DayTwo debe liderar."},
+  {q:'¿Qué porcentaje de proyectos Kubernetes fallan en producción por falta de expertise operativo?',opts:['35%','60%','83%','12%'],correct:2,exp:'83% — la estadística ancla que justifica por qué Kubernetes solo no es suficiente para producción enterprise.'},
+  {q:'¿Por qué "solo uno basta" en la sección de cuándo conviene OpenShift?',opts:['Porque los cuatro criterios son equivalentes y da lo mismo cuál aplica','Porque son escenarios alternativos, no requisitos acumulativos — con uno hay argumento sólido','Porque Red Hat recomienda no evaluar más de un criterio por cliente','Porque los otros tres criterios son opcionales según la versión de OpenShift'],correct:1,exp:'Son escenarios alternativos. Si el cliente cae en cualquiera de los cuatro, ya hay un argumento sólido para OpenShift.'},
+  {q:'¿Qué hace Calico que un firewall tradicional no puede hacer?',opts:['Cifra el tráfico de internet saliente','Protege el movimiento lateral dentro del clúster entre pods','Reemplaza IAM y la gestión de identidad','Funciona como balanceador de carga externo'],correct:1,exp:'El firewall protege el perímetro externo. Calico controla qué puede hablar con qué DENTRO del clúster — donde ocurre el 70% de los ataques modernos.'},
+  {q:'¿Cuál es la ventaja de contenedores sobre VMs en cuanto a uso de recursos?',opts:['Las VMs usan más CPU pero los contenedores usan más RAM','Los contenedores no comparten el kernel del host, por eso son más seguros','Los contenedores tienen casi cero overhead de SO y pueden ser 10x más densos en el mismo hardware','Las VMs son más ligeras pero los contenedores son más portables'],correct:2,exp:'Las VMs dedican 30-50% de recursos al SO huésped. Los contenedores comparten el kernel del host y usan esos recursos directamente para las aplicaciones.'},
+  {q:'¿Cuándo deberías involucrar a DayTwo en una oportunidad?',opts:['Solo cuando el cliente tiene problemas en producción','Solo si el canal no tiene ingenieros — de lo contrario es mejor no mencionarlos','Desde la primera reunión de discovery técnico, no como rescate posterior','Únicamente para clientes con más de 100 workers'],correct:2,exp:'DayTwo debe presentarse desde el discovery técnico inicial. Las oportunidades donde entra desde el principio se cierran significativamente más rápido — y el canal mantiene la relación comercial y el revenue.'},
 ];
 
-/* ===================== GLOSSARY TOOLTIP (global) ===================== */
-const tooltipEl = document.createElement('div');
-tooltipEl.className = 'global-tooltip';
-document.body.appendChild(tooltipEl);
-let ttTarget = null;
+/* ═══════════════════════ SLIDER ═══════════════════════ */
+let cur = 0;
+const track = document.getElementById('track');
+const TOTAL = SLIDES.length;
 
+function goTo(n, skipHash){
+  cur = Math.max(0, Math.min(n, TOTAL-1));
+  track.style.transform = `translateX(-${cur * 100}vw)`;
+  document.getElementById('navPrev').disabled = cur === 0;
+  document.getElementById('navNext').disabled = cur === TOTAL-1;
+  document.getElementById('snTag').textContent = SLIDES[cur].tag;
+  document.getElementById('snTitle').textContent = SLIDES[cur].title;
+  document.getElementById('snCount').textContent = `${cur+1} / ${TOTAL}`;
+  document.getElementById('progFill').style.width = `${(cur+1)/TOTAL*100}%`;
+}
+
+document.getElementById('navPrev').addEventListener('click', ()=>goTo(cur-1));
+document.getElementById('navNext').addEventListener('click', ()=>goTo(cur+1));
+document.addEventListener('keydown', e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='ArrowRight') goTo(cur+1);
+  if(e.key==='ArrowLeft') goTo(cur-1);
+});
+let tsX=0;
+document.getElementById('viewport').addEventListener('touchstart',e=>tsX=e.touches[0].clientX,{passive:true});
+document.getElementById('viewport').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tsX; if(Math.abs(dx)>60) goTo(cur+(dx<0?1:-1));},{passive:true});
+
+/* index */
+const idxOverlay = document.getElementById('idxOverlay');
+document.getElementById('idxBtn').addEventListener('click',()=>idxOverlay.classList.add('open'));
+document.getElementById('idxClose').addEventListener('click',()=>idxOverlay.classList.remove('open'));
+const idxList = document.getElementById('idxList');
+idxList.innerHTML = SLIDES.map((s,i)=>`<li><a href="#" data-i="${i}"><span class="idx-num">${s.tag}</span><span class="idx-lbl">${s.title}</span></a></li>`).join('');
+idxList.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();goTo(parseInt(a.dataset.i));idxOverlay.classList.remove('open');}));
+goTo(0);
+
+/* ═══════════════════════ TOOLTIP ═══════════════════════ */
+const gTip = document.getElementById('gTip');
+let ttTarget=null;
 function openTip(target){
-  tooltipEl.textContent = target.dataset.tip;
-  tooltipEl.style.visibility = 'hidden';
-  tooltipEl.style.display = 'block';
-  const rect = target.getBoundingClientRect();
-  const tw = tooltipEl.offsetWidth, th = tooltipEl.offsetHeight;
-  let left = rect.left + rect.width/2 - tw/2;
-  left = Math.max(12, Math.min(left, window.innerWidth - tw - 12));
-  let top = rect.top - th - 10;
-  if(top < 8) top = rect.bottom + 10;
-  tooltipEl.style.left = left + 'px';
-  tooltipEl.style.top = top + 'px';
-  tooltipEl.style.visibility = 'visible';
-  ttTarget = target;
+  gTip.textContent=target.dataset.tip;
+  gTip.style.visibility='hidden'; gTip.style.display='block';
+  const r=target.getBoundingClientRect(), tw=gTip.offsetWidth, th=gTip.offsetHeight;
+  let left=r.left+r.width/2-tw/2;
+  left=Math.max(10,Math.min(left,window.innerWidth-tw-10));
+  let top=r.top-th-10;
+  if(top<8) top=r.bottom+10;
+  gTip.style.left=left+'px'; gTip.style.top=top+'px'; gTip.style.visibility='visible';
+  ttTarget=target;
 }
-function closeTip(){
-  tooltipEl.style.display = 'none';
-  ttTarget = null;
-}
-document.addEventListener('mouseover', e=>{
-  const t = e.target.closest('.info-term');
-  if(t) openTip(t);
-});
-document.addEventListener('mouseout', e=>{
-  const t = e.target.closest('.info-term');
-  if(t && t===ttTarget) closeTip();
-});
-window.addEventListener('scroll', closeTip, {passive:true});
-/* capture phase: runs before any ancestor's own click handler (e.g. the ladder-tier toggle),
-   so tapping a glossary term never also collapses the card it sits inside */
-document.addEventListener('click', e=>{
-  const t = e.target.closest('.info-term');
-  if(t){
-    e.stopPropagation();
-    if(ttTarget === t) closeTip(); else openTip(t);
-  } else if(ttTarget){
-    closeTip();
-  }
-}, true);
+function closeTip(){gTip.style.display='none'; ttTarget=null;}
+document.addEventListener('mouseover',e=>{const t=e.target.closest('.info-term'); if(t) openTip(t);});
+document.addEventListener('mouseout',e=>{const t=e.target.closest('.info-term'); if(t&&t===ttTarget) closeTip();});
+document.addEventListener('click',e=>{
+  const t=e.target.closest('.info-term');
+  if(t){e.stopPropagation(); if(ttTarget===t) closeTip(); else openTip(t);}
+  else if(ttTarget) closeTip();
+},true);
 
-/* ===================== HERO TOGGLE ===================== */
-const hwGrid = document.getElementById('hwGrid');
+/* ═══════════════════════ ACCORDIONS ═══════════════════════ */
+document.querySelectorAll('.acc').forEach(a=>{
+  a.querySelector('.acc-h').addEventListener('click',()=>a.classList.toggle('open'));
+});
+
+/* ═══════════════════════ S0 HERO TOGGLE ═══════════════════════ */
+const hwGrid=document.getElementById('hwGrid');
 function renderHero(mode){
-  hwGrid.innerHTML = features.map(f=>{
-    const on = mode==='ocp' ? true : f.both;
-    const label = on
-      ? `<span class="info-term" data-tip="${esc(f.desc)}">${f.name}</span>`
-      : `${f.name} — no incluido`;
+  hwGrid.innerHTML=features.map(f=>{
+    const on=mode==='ocp'?true:f.both;
+    const label=on?`<span class="info-term" data-tip="${esc(f.desc)}">${f.name}</span>`:`${f.name} — no incluido`;
     return `<div class="hw-item ${on?'on':''}"><span class="dot"></span>${label}</div>`;
   }).join('');
 }
 renderHero('ocp');
 document.querySelectorAll('.hw-btn').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('.hw-btn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    renderHero(b.dataset.mode);
-  });
+  b.addEventListener('click',()=>{document.querySelectorAll('.hw-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); renderHero(b.dataset.mode);});
 });
 
-/* ===================== MENU / INDEX ===================== */
-const overlay = document.getElementById('indexOverlay');
-document.getElementById('menuBtn').addEventListener('click', ()=>overlay.classList.add('open'));
-document.getElementById('indexClose').addEventListener('click', ()=>overlay.classList.remove('open'));
-document.querySelectorAll('#indexList a').forEach(a=>a.addEventListener('click', ()=>overlay.classList.remove('open')));
-
-/* ===================== SALE Q&A (ch03) ===================== */
-document.getElementById('saleQA').innerHTML = saleQA.map((b,i)=>`
-  <div class="qa-block" data-i="${i}">
-    <div class="qa-head"><h4>${b.q}</h4><span>+</span></div>
-    <div class="qa-body">
-      ${b.cases.map(c=>`<div class="qa-case"><span class="client">Cliente podría decir</span>"${c.client}"<div class="reply" style="margin-top:8px;">${c.reply}</div></div>`).join('')}
-    </div>
+/* ═══════════════════════ S3 SALE Q&A ═══════════════════════ */
+document.getElementById('saleQA').innerHTML=saleQA.map((b,i)=>`
+  <div class="acc" data-i="${i}">
+    <div class="acc-h"><h4>${b.q}</h4><span class="arr">+</span></div>
+    <div class="acc-b">${b.cases.map(c=>`<div class="qa-case"><span class="client-label">El cliente podría decir</span>"${c.c}"<div class="qa-reply">${c.r}</div></div>`).join('')}</div>
   </div>`).join('');
-document.querySelectorAll('.qa-block').forEach(item=>{
-  item.querySelector('.qa-head').addEventListener('click', ()=>item.classList.toggle('open'));
+document.querySelectorAll('#saleQA .acc').forEach(a=>{
+  a.querySelector('.acc-h').addEventListener('click',()=>a.classList.toggle('open'));
 });
 
-/* ===================== WHEN CARDS (ch03) ===================== */
-document.getElementById('whenGrid').innerHTML = whenCards.map((c,i)=>`
-  <div class="acc-item" data-i="${i}">
-    <div class="acc-head"><h4>${c.t}</h4><span>+</span></div>
-    <div class="acc-body">${c.d}</div>
-  </div>`).join('');
+/* ═══════════════════════ S4 WHEN CARDS ═══════════════════════ */
+document.getElementById('whenGrid').innerHTML=whenCards.map((c,i)=>`
+  <div class="acc"><div class="acc-h"><h4>${c.t}</h4><span class="arr">+</span></div>
+  <div class="acc-b">${c.d}</div></div>`).join('');
+document.querySelectorAll('#whenGrid .acc').forEach(a=>{
+  a.querySelector('.acc-h').addEventListener('click',()=>a.classList.toggle('open'));
+});
 
-/* ===================== LADDER (ch04) ===================== */
-const ladderEl = document.getElementById('ladder');
-ladderEl.innerHTML = ladderTiers.map((t,i)=>`
-  <div class="ladder-tier" data-i="${i}">
-    <div class="lt-head"><h4>${t.name}</h4><span class="lt-badge">${t.badge}</span></div>
-    <div class="ladder-detail"><ul>${t.items.map(it=>
-      it.desc
-        ? `<li><span class="info-term" data-tip="${esc(it.desc)}">${it.label}</span></li>`
-        : `<li class="sep">${it.label}</li>`
+/* ═══════════════════════ S5 LADDER ═══════════════════════ */
+document.getElementById('ladder').innerHTML=ladderTiers.map((t,i)=>`
+  <div class="rung" data-i="${i}">
+    <div class="rung-h"><h4>${t.name}</h4><span class="rung-badge">${t.badge}</span></div>
+    <div class="rung-b"><ul>${t.items.map(it=>
+      it.sep?`<li class="sep">${it.label}</li>`:
+      `<li><span class="info-term" data-tip="${esc(it.desc)}">${it.label}</span></li>`
     ).join('')}</ul></div>
   </div>`).join('');
-
-/* generic accordion / toggle handler for acc-item and ladder-tier */
-document.querySelectorAll('.acc-item').forEach(item=>{
-  item.querySelector('.acc-head').addEventListener('click', ()=>item.classList.toggle('open'));
-});
-document.querySelectorAll('.ladder-tier').forEach(item=>{
-  item.addEventListener('click', ()=>{
-    const wasActive = item.classList.contains('active');
-    document.querySelectorAll('.ladder-tier').forEach(x=>x.classList.remove('active'));
-    if(!wasActive) item.classList.add('active');
+document.querySelectorAll('.rung').forEach(r=>{
+  r.querySelector('.rung-h').addEventListener('click',()=>{
+    const was=r.classList.contains('open');
+    document.querySelectorAll('.rung').forEach(x=>x.classList.remove('open'));
+    if(!was) r.classList.add('open');
   });
 });
 
-/* ===================== EDITIONS TABLE (ch04) ===================== */
-const editionTbody = document.querySelector('#editionTable tbody');
-function renderEditions(filter){
-  const rows = editions.filter(e=> filter==='all' ? true : e.cat===filter);
-  editionTbody.innerHTML = rows.map(e=>`<tr><td class="tag"><span class="info-term" data-tip="${esc(e.desc)}">${e.opt}</span></td><td>${e.feel}</td><td>${e.best}</td></tr>`).join('');
+/* editions table */
+const edTbody=document.querySelector('#editionTable tbody');
+function renderEditions(f){
+  edTbody.innerHTML=editions.filter(e=>f==='all'?true:e.cat===f).map(e=>
+    `<tr><td class="tag"><span class="info-term" data-tip="${esc(e.desc)}">${e.opt}</span></td><td>${e.feel}</td><td>${e.best}</td></tr>`
+  ).join('');
 }
 renderEditions('all');
-document.querySelectorAll('#editionFilter .filter-btn').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    document.querySelectorAll('#editionFilter .filter-btn').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    renderEditions(b.dataset.f);
-  });
+document.querySelectorAll('#editionFilter .fb').forEach(b=>{
+  b.addEventListener('click',()=>{document.querySelectorAll('#editionFilter .fb').forEach(x=>x.classList.remove('active')); b.classList.add('active'); renderEditions(b.dataset.f);});
 });
 
-/* ===================== QUADRANT (ch05) ===================== */
-const quadWrap = document.getElementById('quadWrap');
-quadWrap.innerHTML = quadrants.map((q,i)=>`<div class="quad" data-i="${i}">${q.label.replace(/\n/g,'<br>')}</div>`).join('');
-const quadDetail = document.getElementById('quadDetail');
+/* ═══════════════════════ S6 ROKS ═══════════════════════ */
+document.getElementById('quadWrap').innerHTML=quadrants.map((q,i)=>
+  `<div class="quad" data-i="${i}">${q.label.replace(/\n/g,'<br>')}</div>`).join('');
+const qDetail=document.getElementById('quadDetail');
 document.querySelectorAll('.quad').forEach((el,i)=>{
-  el.addEventListener('click', ()=>{
+  el.addEventListener('click',()=>{
     document.querySelectorAll('.quad').forEach(x=>x.classList.remove('active'));
     el.classList.add('active');
-    quadDetail.innerHTML = `<b style="color:var(--amber);">${quadrants[i].who}</b><br>${quadrants[i].detail}`;
+    qDetail.innerHTML=`<b style="color:var(--amber);">${quadrants[i].label.replace(/\n/g,' ')}</b><br>${quadrants[i].detail}`;
   });
 });
-
-/* ===================== INFRA CARDS (ch05) ===================== */
-const infraGrid = document.getElementById('infraCards');
-infraGrid.innerHTML = infraOptions.map((o,i)=>`
-  <div class="pick-card" data-i="${i}">
-    <span class="pc-eyebrow">${o.e}</span>
-    <h4>${o.t}</h4>
-    <p style="font-size:13px; color:var(--ink-soft);">${o.d}</p>
-  </div>`).join('');
-const infraDetail = document.getElementById('infraDetail');
-document.querySelectorAll('.pick-card').forEach((el,i)=>{
-  el.addEventListener('click', ()=>{
-    document.querySelectorAll('.pick-card').forEach(x=>x.classList.remove('active'));
+document.getElementById('infraCards').innerHTML=infraOpts.map((o,i)=>
+  `<div class="pick" data-i="${i}"><span class="pe">${o.e}</span><h4>${o.t}</h4><p>${o.d}</p></div>`).join('');
+const inDetail=document.getElementById('infraDetail');
+document.querySelectorAll('.pick').forEach((el,i)=>{
+  el.addEventListener('click',()=>{
+    document.querySelectorAll('.pick').forEach(x=>x.classList.remove('active'));
     el.classList.add('active');
-    infraDetail.innerHTML = `<b>Analogía — ${infraOptions[i].t}</b>${infraOptions[i].analogy}`;
+    inDetail.innerHTML=`<b>Analogía — ${infraOpts[i].t}</b>${infraOpts[i].a}`;
   });
 });
 
-/* ===================== OBJECTION (ch06) ===================== */
-document.getElementById('objectionText').addEventListener('click', ()=>{
-  document.getElementById('objectionAnswer').style.display = 'block';
-});
-
-/* ===================== DEPLOY DECISION TOOL (ch07) ===================== */
-let dq1=null, dq2=null;
+/* ═══════════════════════ S8 DEPLOY DECISION ═══════════════════════ */
+let dq1=null,dq2=null;
 document.querySelectorAll('.dopt').forEach(b=>{
-  b.addEventListener('click', ()=>{
-    const q = b.dataset.q;
-    document.querySelectorAll(`.dopt[data-q="${q}"]`).forEach(x=>x.classList.remove('sel'));
+  b.addEventListener('click',()=>{
+    document.querySelectorAll(`.dopt[data-q="${b.dataset.q}"]`).forEach(x=>x.classList.remove('sel'));
     b.classList.add('sel');
-    if(q==='1') dq1=b.dataset.v; else dq2=b.dataset.v;
-    updateDeployResult();
+    if(b.dataset.q==='1') dq1=b.dataset.v; else dq2=b.dataset.v;
+    const box=document.getElementById('deployResult');
+    if(!dq1||!dq2){box.textContent='Responde las dos preguntas.';return;}
+    if(dq2==='yes') box.innerHTML='<b>Bare Metal.</b> Rendimiento físico máximo sin hipervisor — para GPU, baja latencia o OpenShift Virtualization. Más responsabilidad sobre firmware, red y storage.';
+    else if(dq1==='speed') box.innerHTML='<b>IPI (Installer Provisioned Infrastructure).</b> El instalador automatiza red, máquinas y balanceadores. Ideal para ROKS y despliegues rápidos en nube.';
+    else box.innerHTML='<b>UPI (User Provisioned Infrastructure).</b> El equipo prepara la infraestructura con sus propios estándares y OpenShift se instala encima. Más control, más planificación.';
   });
 });
-function updateDeployResult(){
-  const box = document.getElementById('deployResult');
-  if(!dq1 || !dq2){ box.textContent = "Responde las dos preguntas para ver la recomendación."; return; }
-  if(dq2==='yes'){
-    box.innerHTML = "<b>Recomendación: Bare Metal.</b> Necesita rendimiento físico máximo sin hipervisor — ideal para GPU, baja latencia, OpenShift Virtualization o edge computing. Considera que esto suma responsabilidad sobre firmware, red y storage.";
-  } else if(dq1==='speed'){
-    box.innerHTML = "<b>Recomendación: IPI (Installer Provisioned Infrastructure).</b> El instalador automatiza red, máquinas, balanceadores y storage inicial. Menor complejidad operativa, ideal para despliegues rápidos en una nube soportada como IBM Cloud.";
-  } else {
-    box.innerHTML = "<b>Recomendación: UPI (User Provisioned Infrastructure).</b> El equipo prepara antes VMs, redes, DNS y balanceadores con sus propios estándares, y OpenShift se instala sobre esa base. Más control, pero requiere más planificación.";
-  }
-}
-
-/* ===================== ARCH DIAGRAM (ch07) ===================== */
 document.querySelectorAll('.arch-box').forEach(b=>{
-  b.addEventListener('click', ()=>{
+  b.addEventListener('click',()=>{
     document.querySelectorAll('.arch-box').forEach(x=>x.classList.remove('sel'));
     b.classList.add('sel');
-    document.getElementById('archDetail').innerHTML = archDetails[b.dataset.arch];
+    document.getElementById('archDetail').innerHTML=archDetails[b.dataset.arch];
   });
 });
 
-/* ===================== SIZING CALCULATOR (ch08) ===================== */
-const inApps = document.getElementById('inApps');
-const inProfile = document.getElementById('inProfile');
-const inDensity = document.getElementById('inDensity');
-const inHA = document.getElementById('inHA');
-const inGrowth = document.getElementById('inGrowth');
-const lblApps = document.getElementById('lblApps');
-const lblDensity = document.getElementById('lblDensity');
-const receipt = document.getElementById('receipt');
-const shipsEl = document.getElementById('ships');
-
+/* ═══════════════════════ S9 SIZING ═══════════════════════ */
+const inApps=document.getElementById('inApps'),inProfile=document.getElementById('inProfile'),
+      inDensity=document.getElementById('inDensity'),inHA=document.getElementById('inHA'),
+      inGrowth=document.getElementById('inGrowth');
 function calcSizing(){
-  const apps = parseInt(inApps.value,10);
-  const podsPerApp = parseFloat(inProfile.value);
-  const density = parseInt(inDensity.value,10);
-  const ha = inHA.checked;
-  const growth = inGrowth.checked;
-
-  lblApps.textContent = apps;
-  lblDensity.textContent = density;
-
-  const appPods = Math.round(apps * podsPerApp);
-  const platformPods = Math.max(80, Math.round(appPods * 0.22));
-  let totalPods = appPods + platformPods;
-  const preGrowth = totalPods;
-  if(growth) totalPods = Math.round(totalPods * 1.25);
-
-  let workers = Math.ceil(totalPods / density);
-  if(ha) workers += 1;
-  const totalNodes = workers + 3 + 3;
-
-  let lines = [];
-  lines.push(`<div class="line"><span>${apps} apps × ${podsPerApp} pods/app</span><span>= ${appPods} pods de aplicación</span></div>`);
-  lines.push(`<div class="line"><span>+ pods de plataforma (logging, monitoring, ingress, operators, ~22%)</span><span>+ ${platformPods} pods</span></div>`);
-  lines.push(`<div class="line"><span>Subtotal</span><span>= ${preGrowth} pods</span></div>`);
-  if(growth) lines.push(`<div class="line"><span>+ headroom de crecimiento (25%)</span><span>= ${totalPods} pods</span></div>`);
-  lines.push(`<div class="line"><span>${totalPods} pods ÷ ${density} pods/worker</span><span>= ${Math.ceil(totalPods/density)} workers</span></div>`);
-  if(ha) lines.push(`<div class="line"><span>+ 1 worker por alta disponibilidad (N+1)</span><span>= ${workers} workers</span></div>`);
-  lines.push(`<div class="line total"><span>Clúster completo</span><span>${workers} workers + 3 infra + 3 control plane = ${totalNodes} nodos</span></div>`);
-  receipt.innerHTML = lines.join('');
-
-  const maxIcons = 18;
-  let shipsHtml = '';
-  for(let i=0; i<Math.min(workers, maxIcons); i++){ shipsHtml += `<div class="ship">W${i+1}</div>`; }
-  if(workers > maxIcons) shipsHtml += `<div class="ship more">+ ${workers-maxIcons} más</div>`;
-  shipsHtml += `<div class="ship" style="background:var(--red-dim); border-color:var(--red);">CP×3</div>`;
-  shipsHtml += `<div class="ship" style="background:none; border-color:var(--ink-faint);">INFRA×3</div>`;
-  shipsEl.innerHTML = shipsHtml;
+  const apps=+inApps.value,ppA=+inProfile.value,density=+inDensity.value;
+  document.getElementById('lblApps').textContent=apps;
+  document.getElementById('lblDensity').textContent=density;
+  const appPods=Math.round(apps*ppA);
+  const platPods=Math.max(80,Math.round(appPods*0.22));
+  let total=appPods+platPods;
+  const preg=total;
+  if(inGrowth.checked) total=Math.round(total*1.25);
+  let w=Math.ceil(total/density);
+  if(inHA.checked) w+=1;
+  const nodes=w+6;
+  const lines=[
+    `<div class="rline"><span>${apps} apps × ${ppA} pods/app</span><span>= ${appPods} pods de app</span></div>`,
+    `<div class="rline"><span>+ pods de plataforma (~22%)</span><span>+ ${platPods}</span></div>`,
+    `<div class="rline"><span>Subtotal</span><span>= ${preg} pods</span></div>`,
+    inGrowth.checked?`<div class="rline"><span>+ headroom 25%</span><span>= ${total} pods</span></div>`:'',
+    `<div class="rline"><span>${total} ÷ ${density} pods/worker</span><span>= ${Math.ceil(total/density)} workers</span></div>`,
+    inHA.checked?`<div class="rline"><span>+ 1 worker HA (N+1)</span><span>= ${w} workers</span></div>`:'',
+    `<div class="rline rtotal"><span>Clúster completo</span><span>${w} workers + 3 infra + 3 CP = ${nodes} nodos</span></div>`,
+  ];
+  document.getElementById('receipt').innerHTML=lines.join('');
+  const max=18;
+  let sh='';
+  for(let i=0;i<Math.min(w,max);i++) sh+=`<div class="ship">W${i+1}</div>`;
+  if(w>max) sh+=`<div class="ship" style="background:none;border:none;color:var(--ink-faint);">+${w-max}</div>`;
+  sh+=`<div class="ship" style="background:var(--red-dim);border-color:var(--red);">CP×3</div>`;
+  sh+=`<div class="ship" style="background:none;border-color:var(--ink-faint);color:var(--ink-faint);">I×3</div>`;
+  document.getElementById('ships').innerHTML=sh;
 }
-[inApps, inProfile, inDensity, inHA, inGrowth].forEach(el=>el.addEventListener('input', calcSizing));
+[inApps,inProfile,inDensity,inHA,inGrowth].forEach(el=>el.addEventListener('input',calcSizing));
 calcSizing();
 
-/* ===================== TCO (ch09) ===================== */
-const inYears = document.getElementById('inYears');
-const lblYears = document.getElementById('lblYears');
-function calcTco(){
-  const y = parseInt(inYears.value,10);
-  lblYears.textContent = y;
-  const onprem = 100 + y*8;
-  const cloud = y*18;
-  const maxV = Math.max(onprem, cloud, 100);
-  document.getElementById('barOnprem').style.height = (onprem/maxV*200)+'px';
-  document.getElementById('barCloud').style.height = (cloud/maxV*200)+'px';
-  document.getElementById('numOnprem').textContent = '~'+onprem+' u.';
-  document.getElementById('numCloud').textContent = '~'+cloud+' u.';
-  const verdict = document.getElementById('tcoVerdict');
-  if(y <= 8){
-    verdict.innerHTML = `<b>A ${y} años, cloud/ROKS sale más liviano en costo acumulado</b> — además de la agilidad de pagar solo por lo que se usa. El punto de equilibrio aproximado de este modelo ilustrativo es alrededor de los 10 años.`;
-  } else {
-    verdict.innerHTML = `<b>A ${y} años, la inversión on-premise ya se empezó a pagar sola.</b> Si la carga es estable y hay requisitos fuertes de soberanía de datos, este es el escenario donde on-premise gana terreno.`;
-  }
-}
-inYears.addEventListener('input', calcTco);
-calcTco();
+/* ═══════════════════════ S10 TCO 3-VÍAS ═══════════════════════ */
+function calcTco3(){
+  const w=+document.getElementById('inWorkers').value;
+  const y=+document.getElementById('inTcoYears').value;
+  document.getElementById('tcoWorkers').textContent=w;
+  document.getElementById('tcoYears').textContent=y;
+  // Cost model in $K (illustrative)
+  const hwYear=w*16;       // hardware amortized (incl 3+3 extra nodes)
+  const licBare=0;
+  const licOCP=w*12;       // Red Hat OCP license/year
+  const opsBare=w*17;      // ops cost: 2 engineers shared
+  const opsOCP=w*8;        // ops cost: less because OCP automates
+  const opsROKS=w*4;       // minimal ops
+  const roksMonthly=w*34;  // IBM Cloud worker fully managed+license/year
 
-/* ===================== STORAGE POD LIFECYCLE (ch10) ===================== */
-const podBox = document.getElementById('podBox');
-const lockerBox = document.getElementById('lockerBox');
-const podMsg = document.getElementById('podMsg');
-let podHasData = true;
-function renderPod(){
-  podBox.innerHTML = podHasData ? `<div class="icon">📦</div><span>Pod activo</span>` : `<div class="icon">⬜</div><span>Pod nuevo (vacío)</span>`;
-  lockerBox.innerHTML = document.getElementById('pvOn').checked ? `<span>🔒📄</span><span>Bodega externa (PV)</span>` : `<span>🔒</span><span>Sin PV conectado</span>`;
+  const bare  = {capex:Math.round(hwYear*1.4), lic:licBare,  ops:opsBare,  cloud:0};
+  const ocp   = {capex:Math.round(hwYear*1.4), lic:licOCP,   ops:opsOCP,   cloud:0};
+  const roks  = {capex:0,                      lic:0,         ops:opsROKS,  cloud:roksMonthly};
+
+  function totalY(s,yr){ return Math.round(s.capex + (s.lic+s.ops+s.cloud)*yr); }
+  const tBare=totalY(bare,y), tOCP=totalY(ocp,y), tROKS=totalY(roks,y);
+  const maxT=Math.max(tBare,tOCP,tROKS);
+
+  function col(name, s, t, hl){
+    const pct=Math.round(t/maxT*100);
+    return `<div class="tco3-col${hl?' highlight':''}">
+      <div class="tco3-name">${name}</div>
+      <div class="tco3-bar-wrap"><div class="tco3-bar" style="width:${pct}%"></div></div>
+      <div class="tco3-total">$${(t).toLocaleString()}K</div>
+      <div class="tco3-breakdown">
+        <div class="component"><span>CAPEX hardware</span><span>$${s.capex*y}K</span></div>
+        <div class="component"><span>Licencia/año</span><span>$${s.lic*y}K</span></div>
+        <div class="component"><span>Operaciones/año</span><span>$${s.ops*y}K</span></div>
+        ${s.cloud?`<div class="component"><span>Cloud (workers+lic)</span><span>$${s.cloud*y}K</span></div>`:''}
+        <div class="component" style="color:var(--paper);border-top:1px solid var(--panel-line);margin-top:4px;padding-top:4px;"><span>Total ${y} año(s)</span><span>$${t}K</span></div>
+      </div>
+    </div>`;
+  }
+  document.getElementById('tco3Grid').innerHTML=col('On-prem<br>sin OpenShift',bare,tBare,false)+col('On-prem<br>con OpenShift',ocp,tOCP,false)+col('IBM Cloud<br>ROKS',roks,tROKS,true);
+
+  const verd=document.getElementById('tco3Verdict');
+  const minT=Math.min(tBare,tOCP,tROKS);
+  if(minT===tROKS) verd.innerHTML=`<b style="color:var(--green);">A ${y} año(s), ROKS tiene el menor costo total</b> — sin CAPEX inicial y mínima carga operativa. La diferencia es el pago por consumo cloud: predecible pero recurrente.`;
+  else if(minT===tBare) verd.innerHTML=`<b style="color:var(--amber);">A ${y} año(s), on-premise sin OpenShift tiene el menor costo nominal</b> — pero no contempla el riesgo operativo: un incidente mayor o la necesidad de contratar expertise puede cambiar esa ecuación rápidamente.`;
+  else verd.innerHTML=`<b style="color:var(--blue);">A ${y} año(s), on-premise con OpenShift es la opción más balanceada</b> — tiene el CAPEX de hardware pero reduce significativamente el costo de operaciones vs bare K8s, y da el soporte enterprise de Red Hat.`;
 }
-renderPod();
-document.getElementById('pvOn').addEventListener('change', renderPod);
-document.getElementById('recycleBtn').addEventListener('click', ()=>{
-  const pvOn = document.getElementById('pvOn').checked;
-  podHasData = false;
-  renderPod();
-  podMsg.textContent = pvOn
-    ? "El pod se recicló, pero los datos sobrevivieron en el Persistent Volume — un pod nuevo puede montarlo y seguir donde quedó."
-    : "El pod se recicló y los datos se perdieron con él, porque nunca se guardaron en un volumen externo.";
-  setTimeout(()=>{ podHasData = true; renderPod(); }, 1800);
+document.getElementById('inWorkers').addEventListener('input',calcTco3);
+document.getElementById('inTcoYears').addEventListener('input',calcTco3);
+calcTco3();
+
+/* ═══════════════════════ S11 STORAGE ═══════════════════════ */
+const podBox=document.getElementById('podBox'),lockerBox=document.getElementById('lockerBox');
+function renderPod(hasData){
+  podBox.innerHTML=hasData?`<div class="ico">📦</div><span>Pod activo</span>`:`<div class="ico">⬜</div><span>Pod nuevo (vacío)</span>`;
+  lockerBox.innerHTML=document.getElementById('pvOn').checked?`<span>🔒📄</span><span>PV — datos seguros</span>`:`<span>🔒</span><span>Sin PV conectado</span>`;
+}
+renderPod(true);
+document.getElementById('pvOn').addEventListener('change',()=>renderPod(true));
+document.getElementById('recycleBtn').addEventListener('click',()=>{
+  const pv=document.getElementById('pvOn').checked;
+  renderPod(false);
+  document.getElementById('podMsg').textContent=pv?'El pod se recicló pero los datos sobrevivieron en el Persistent Volume.':'El pod se recicló y los datos se perdieron — no había volumen externo.';
+  setTimeout(()=>renderPod(true),1800);
 });
 
-/* ===================== S2I STEPPER (ch11) ===================== */
-let s2iIdx = 0;
-const stepperDots = document.getElementById('stepperDots');
-const stepPanel = document.getElementById('stepPanel');
-function renderStep(){
-  stepperDots.innerHTML = s2iSteps.map((_,i)=>`<div class="step-dot ${i<s2iIdx?'done':(i===s2iIdx?'now':'')}"></div>`).join('');
-  const s = s2iSteps[s2iIdx];
-  stepPanel.innerHTML = `<h4>${s.t}</h4><p>${s.d}</p>`;
-  document.getElementById('stepPrev').disabled = s2iIdx===0;
-  document.getElementById('stepNext').textContent = s2iIdx===s2iSteps.length-1 ? "🎉 Demo cerrada" : "Siguiente paso →";
-}
-document.getElementById('stepPrev').addEventListener('click', ()=>{ if(s2iIdx>0){s2iIdx--; renderStep();} });
-document.getElementById('stepNext').addEventListener('click', ()=>{ if(s2iIdx<s2iSteps.length-1){s2iIdx++; renderStep();} });
-renderStep();
-
-/* stopwatch */
-let swSeconds=0, swInterval=null;
-const swTime = document.getElementById('swTime');
-function fmt(s){ const m=Math.floor(s/60); const ss=s%60; return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
-function tickSw(){
-  swSeconds++;
-  swTime.textContent = fmt(swSeconds);
-  swTime.classList.remove('warn','bad');
-  if(swSeconds>=1200) swTime.classList.add('bad');
-  else if(swSeconds>=480) swTime.classList.add('warn');
-}
-document.getElementById('swStart').addEventListener('click', ()=>{ if(!swInterval) swInterval=setInterval(tickSw,1000); });
-document.getElementById('swStop').addEventListener('click', ()=>{ clearInterval(swInterval); swInterval=null; });
-document.getElementById('swReset').addEventListener('click', ()=>{ clearInterval(swInterval); swInterval=null; swSeconds=0; swTime.textContent='00:00'; swTime.classList.remove('warn','bad'); });
-
-/* ===================== ECOSYSTEM TABS (ch12) ===================== */
-const ecoTabs = document.getElementById('ecoTabs');
-const ecoPanels = document.getElementById('ecoPanels');
-ecoTabs.innerHTML = ecoData.map((e,i)=>`<button class="eco-tab ${i===0?'active':''}" data-k="${e.k}">${e.label}</button>`).join('');
-ecoPanels.innerHTML = ecoData.map((e,i)=>`
-  <div class="eco-panel ${i===0?'show':''}" data-k="${e.k}">
-    <div class="card"><h4>${e.label}</h4><ul class="plain">${e.items.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+/* ═══════════════════════ S12 VMs vs OCP ═══════════════════════ */
+const vmGrid=document.getElementById('vmGrid');
+vmGrid.innerHTML+=vmRows.map((r,i)=>`
+  <div class="vm-row" data-i="${i}">
+    <div class="vm-cell">${r.c}</div>
+    <div class="vm-cell vm-bad"><span class="vm-indicator"></span>${r.vm}</div>
+    <div class="vm-cell vm-good"><span class="vm-indicator"></span>${r.ocp}</div>
+    <div class="vm-detail">${r.d}</div>
   </div>`).join('');
+document.querySelectorAll('.vm-row:not(.vm-header)').forEach(r=>{
+  r.addEventListener('click',()=>r.classList.toggle('open'));
+});
+
+/* ═══════════════════════ S13 S2I ═══════════════════════ */
+let s2iIdx=0;
+function renderStep(){
+  document.getElementById('stepDots').innerHTML=s2iSteps.map((_,i)=>`<div class="step-dot ${i<s2iIdx?'done':i===s2iIdx?'now':''}"></div>`).join('');
+  const s=s2iSteps[s2iIdx];
+  document.getElementById('stepPanel').innerHTML=`<h4>${s.t}</h4><p>${s.d}</p>`;
+  document.getElementById('stepPrev').disabled=s2iIdx===0;
+  document.getElementById('stepNext').textContent=s2iIdx===s2iSteps.length-1?'🎉 Demo cerrada':'Siguiente →';
+}
+document.getElementById('stepPrev').addEventListener('click',()=>{if(s2iIdx>0){s2iIdx--;renderStep();}});
+document.getElementById('stepNext').addEventListener('click',()=>{if(s2iIdx<s2iSteps.length-1){s2iIdx++;renderStep();}});
+renderStep();
+let swSec=0,swInt=null;
+const swEl=document.getElementById('swTime');
+function fmtSw(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+document.getElementById('swStart').addEventListener('click',()=>{if(!swInt) swInt=setInterval(()=>{swSec++;swEl.textContent=fmtSw(swSec);swEl.className='sw-time'+(swSec>=1200?' bad':swSec>=480?' warn':'');},1000);});
+document.getElementById('swStop').addEventListener('click',()=>{clearInterval(swInt);swInt=null;});
+document.getElementById('swReset').addEventListener('click',()=>{clearInterval(swInt);swInt=null;swSec=0;swEl.textContent='00:00';swEl.className='sw-time';});
+
+/* ═══════════════════════ S14 ECOSYSTEM TABS ═══════════════════════ */
+document.getElementById('ecoTabs').innerHTML=ecoData.map((e,i)=>`<button class="eco-tab ${i===0?'active':''}" data-k="${e.k}">${e.label}</button>`).join('');
+document.getElementById('ecoPanels').innerHTML=ecoData.map((e,i)=>`<div class="eco-panel ${i===0?'show':''}" data-k="${e.k}"><div class="card"><h4>${e.label}</h4><ul class="plain">${e.items.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>`).join('');
 document.querySelectorAll('.eco-tab').forEach(t=>{
-  t.addEventListener('click', ()=>{
+  t.addEventListener('click',()=>{
     document.querySelectorAll('.eco-tab').forEach(x=>x.classList.remove('active'));
     t.classList.add('active');
-    document.querySelectorAll('.eco-panel').forEach(p=>p.classList.toggle('show', p.dataset.k===t.dataset.k));
+    document.querySelectorAll('.eco-panel').forEach(p=>p.classList.toggle('show',p.dataset.k===t.dataset.k));
   });
 });
 
-/* ===================== RED FLAG CHECKER (ch13) ===================== */
-const flagList = document.getElementById('flagList');
-flagList.innerHTML = redFlags.map((f,i)=>`<div class="flag-item" data-i="${i}"><span class="box"></span><span>"${f}"</span></div>`).join('');
-function updateVerdict(){
-  const checked = document.querySelectorAll('.flag-item.checked').length;
-  const verdict = document.getElementById('verdict');
-  if(checked===0){
-    verdict.className = 'verdict ok';
-    verdict.textContent = "Sin señales marcadas todavía. El equipo del canal puede manejar esto directamente.";
-  } else {
-    verdict.className = 'verdict alert';
-    verdict.innerHTML = `🚩 <b>${checked} señal(es) de alerta activas.</b> Presenta a DayTwo como tu brazo técnico desde la próxima reunión de discovery — no esperes a que el cliente pregunte por implementación.`;
-  }
+/* ═══════════════════════ S15 FLAGS + CHECKLIST ═══════════════════════ */
+document.getElementById('flagList').innerHTML=redFlags.map((f,i)=>`<div class="flag-item" data-i="${i}"><span class="flag-box"></span><span>${f}</span></div>`).join('');
+function updVerdict(){
+  const n=document.querySelectorAll('.flag-item.checked').length;
+  const v=document.getElementById('verdict');
+  if(n===0){v.className='verdict ok';v.textContent='Sin señales marcadas. El equipo del canal puede manejarlo directamente.';}
+  else{v.className='verdict alert';v.innerHTML=`🚩 <b>${n} señal(es) activa(s).</b> Presenta a DayTwo desde la primera reunión de discovery — no esperes a que el cliente pregunte por implementación.`;}
 }
-document.querySelectorAll('.flag-item').forEach(el=>{
-  el.addEventListener('click', ()=>{ el.classList.toggle('checked'); updateVerdict(); });
-});
+document.querySelectorAll('.flag-item').forEach(el=>el.addEventListener('click',()=>{el.classList.toggle('checked');updVerdict();}));
+document.getElementById('checkList').innerHTML=checklistItems.map(c=>`<div class="ck-item"><span class="ck-box"></span><span>${c}</span></div>`).join('');
+document.querySelectorAll('.ck-item').forEach(el=>el.addEventListener('click',()=>el.classList.toggle('done')));
 
-/* ===================== CHECKLIST (ch14) ===================== */
-const checkList = document.getElementById('checkList');
-checkList.innerHTML = checklistItems.map((c,i)=>`<li class="check-item" data-i="${i}"><span class="box"></span><span>${c}</span></li>`).join('');
-document.querySelectorAll('.check-item').forEach(el=>{
-  el.addEventListener('click', ()=> el.classList.toggle('done'));
-});
-
-/* ===================== QUIZ (ch15) ===================== */
-const quizBox = document.getElementById('quizBox');
-let score = 0;
-const scoredQ = new Set();
-quizBox.innerHTML = quizData.map((q,qi)=>`
-  <div class="quiz-q" data-qi="${qi}">
-    <h4>${qi+1}. ${q.q}</h4>
-    <div class="quiz-opts">
-      ${q.opts.map((o,oi)=>`<button class="qopt" data-qi="${qi}" data-oi="${oi}">${o}</button>`).join('')}
-    </div>
-    <div class="quiz-explain" id="exp-${qi}">${q.exp}</div>
-  </div>`).join('');
-
+/* ═══════════════════════ S16 QUIZ ═══════════════════════ */
+let qScore=0; const qScored=new Set();
+document.getElementById('quizBox').innerHTML=quizData.map((q,qi)=>`
+  <div class="quiz-q"><h4>${qi+1}. ${q.q}</h4>
+  <div class="quiz-opts">${q.opts.map((o,oi)=>`<button class="qopt" data-qi="${qi}" data-oi="${oi}">${o}</button>`).join('')}</div>
+  <div class="quiz-exp" id="exp-${qi}">${q.exp}</div></div>`).join('');
 document.querySelectorAll('.qopt').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const qi = parseInt(btn.dataset.qi,10);
-    const oi = parseInt(btn.dataset.oi,10);
-    const correctIdx = quizData[qi].correct;
-    document.querySelectorAll(`.qopt[data-qi="${qi}"]`).forEach(b=>{
-      b.disabled = true;
-      if(parseInt(b.dataset.oi,10)===correctIdx) b.classList.add('correct');
-    });
-    if(oi!==correctIdx) btn.classList.add('wrong');
+  btn.addEventListener('click',()=>{
+    const qi=+btn.dataset.qi, oi=+btn.dataset.oi, ci=quizData[qi].correct;
+    document.querySelectorAll(`.qopt[data-qi="${qi}"]`).forEach(b=>{b.disabled=true; if(+b.dataset.oi===ci) b.classList.add('correct');});
+    if(oi!==ci) btn.classList.add('wrong');
     document.getElementById(`exp-${qi}`).classList.add('show');
-    if(oi===correctIdx && !scoredQ.has(qi)){ score++; scoredQ.add(qi); }
-    document.getElementById('quizScore').textContent = `${score} / ${quizData.length} correctas`;
+    if(oi===ci&&!qScored.has(qi)){qScore++;qScored.add(qi);}
+    document.getElementById('quizScore').textContent=`${qScore} / ${quizData.length} correctas`;
   });
 });
 </script>
