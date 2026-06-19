@@ -438,9 +438,51 @@ ul.plain li{margin-bottom:5px;}
   <div class="callout" style="margin-top:14px;"><b>Argumento de venta:</b> ROKS no es solo "Kubernetes en la nube". Es la única oferta donde IBM y Red Hat — dos líderes enterprise — comparten la responsabilidad operativa. El cliente no está solo. Hay dos empresas detrás del SLA.</div>
 </div></div>
 
-<!-- ═══════ S7: SEGURIDAD ═══════ -->
+<!-- ═══════ S7: ROKS vs VKS ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-07</span><span class="chapter-kicker">Seguridad y redes</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-07</span><span class="chapter-kicker">La pregunta que todo cliente con VMware hace</span></div>
+  <h2>ROKS vs VMware VKS: la comparación completa</h2>
+  <p class="lede">Si el cliente ya tiene VCF, probablemente ya está pagando por Kubernetes sin saberlo: <b style="color:var(--paper);">VKS (vSphere Kubernetes Service)</b> viene incluido dentro de la licencia VCF. Antes de proponer ROKS hay que saber si el cliente ya tiene esto "gratis" en su stack — y cuándo, aun así, conviene migrar o complementar con OpenShift.</p>
+  <div class="acc">
+    <div class="acc-h"><h4>¿Qué es exactamente VKS?</h4><span class="arr">+</span></div>
+    <div class="acc-b">
+      <p>VKS = vSphere Kubernetes Service (antes conocido como parte de Tanzu). Es la capacidad nativa de vSphere/VCF para correr clústeres Kubernetes directamente sobre la misma infraestructura de virtualización que ya corre las VMs del cliente — sin instalar una plataforma de contenedores separada.</p>
+      <p style="margin-bottom:0;">El "Supervisor Cluster" de vSphere convierte a los hosts ESXi en nodos de Kubernetes, y desde ahí el cliente puede crear clústeres Kubernetes (Tanzu Kubernetes Grid) como si fueran más máquinas virtuales. Está pensado para clientes que no quieren un sistema operativo y una pila de administración separada solo para contenedores.</p>
+    </div>
+  </div>
+
+  <hr class="sep-line">
+  <h3 style="font-size:17px;margin:0 0 12px;">Comparación completa — toca cada fila para ver el detalle</h3>
+  <div style="background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);overflow:hidden;">
+    <div class="vm-grid" id="vksGrid">
+      <div class="vm-row vm-header">
+        <div class="vm-cell">Criterio</div>
+        <div class="vm-cell">VMware VKS</div>
+        <div class="vm-cell">ROKS (IBM Cloud + Red Hat)</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="sep-line">
+  <h3 style="font-size:17px;margin:0 0 12px;">Ayuda a decidir con un cliente real</h3>
+  <div class="dbox" id="vksDecisionBox">
+    <div class="dq"><p>1. ¿El cliente ya tiene licencia VCF completa (Enterprise/Advanced) vigente y pagada?</p><div class="dq-opts">
+      <button class="dopt" data-vq="1" data-vv="yes">Sí, ya la tiene</button>
+      <button class="dopt" data-vq="1" data-vv="no">No, o no está seguro</button>
+    </div></div>
+    <div class="dq"><p>2. ¿Necesita portabilidad multi-cloud o evitar depender de un solo proveedor de virtualización?</p><div class="dq-opts">
+      <button class="dopt" data-vq="2" data-vv="yes">Sí, le preocupa el lock-in</button>
+      <button class="dopt" data-vq="2" data-vv="no">No, prefiere consolidar todo en VMware</button>
+    </div></div>
+    <div class="result-box" id="vksResult">Responde las dos preguntas para ver la recomendación.</div>
+  </div>
+
+  <div class="analogy" style="margin-top:16px;"><b>Lo que Christian preguntó, resuelto</b>No es "ROKS o VKS" como una decisión binaria de toda la empresa. Es evaluar carga por carga: lo que el cliente ya tiene corriendo cómodo en VMware y no necesita moverse, déjalo en VKS. Lo que necesita compliance fuerte, soporte dedicado a Kubernetes, o portabilidad fuera de VMware, ahí es donde ROKS/OpenShift gana el argumento — incluso si el cliente ya pagó VCF.</div>
+</div></div>
+
+<!-- ═══════ S8: SEGURIDAD ═══════ -->
+<div class="slide"><div class="wrap">
+  <div class="chapter-tag"><span class="chapter-id">CONT-08</span><span class="chapter-kicker">Seguridad y redes</span></div>
   <h2>Del portón al pasillo interno</h2>
   <p class="lede">La objeción más común: "ya tenemos firewall". La respuesta correcta no es discutir el firewall — es explicar qué pasa dentro de la terminal una vez que algo ya entró.</p>
   <div class="acc"><div class="acc-h"><h4 style="color:var(--amber);">"Ya tenemos un firewall, ¿para qué necesitamos esto?" — toca para ver la respuesta</h4><span class="arr">+</span></div>
@@ -452,9 +494,9 @@ ul.plain li{margin-bottom:5px;}
   <div class="callout" style="margin-top:14px;"><b>Para clientes regulados (banca, cooperativas, gobierno):</b> el Compliance Operator elimina semanas de trabajo de auditoría manual que alguien tendría que hacer de todas formas para cumplir con SBS, PCI o HIPAA. Eso es tiempo del equipo que se recupera inmediatamente.</div>
 </div></div>
 
-<!-- ═══════ S8: INSTALACIÓN + ARQUITECTURA ═══════ -->
+<!-- ═══════ S9: INSTALACIÓN + ARQUITECTURA ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-08</span><span class="chapter-kicker">Cómo se construye</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-09</span><span class="chapter-kicker">Cómo se construye</span></div>
   <h2>Instalación y arquitectura del clúster</h2>
   <p class="lede">Dos preguntas definen el método de instalación. Respóndelas y mira qué recomienda el material.</p>
   <div class="dbox" id="deployBox">
@@ -478,9 +520,9 @@ ul.plain li{margin-bottom:5px;}
   <div class="arch-detail" id="archDetail">Toca un bloque para ver para qué sirve y cuándo crece.</div>
 </div></div>
 
-<!-- ═══════ S9: SIZING ═══════ -->
+<!-- ═══════ S10: SIZING ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-09</span><span class="chapter-kicker">El bloque más técnico</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-10</span><span class="chapter-kicker">El bloque más técnico</span></div>
   <h2>Sizing: ¿cuántos barcos necesitas?</h2>
   <p class="lede"><b style="color:var(--paper);">100 aplicaciones ≠ 100 pods.</b> Una app típica con frontend + backend + worker, con 2 réplicas cada uno, ya son 6 pods. El número de apps es el punto de partida, no el dato final.</p>
   <div class="analogy"><b>Analogía</b>No preguntas "¿cuántas cajas tengo?" para saber cuántos barcos necesitas. Preguntas cuánto pesa cada caja, cuántas entran por barco, y cuánto margen dejas para la próxima temporada alta.</div>
@@ -494,9 +536,9 @@ ul.plain li{margin-bottom:5px;}
   </div>
 </div></div>
 
-<!-- ═══════ S10: TCO 3-VÍAS ═══════ -->
+<!-- ═══════ S11: TCO 3-VÍAS ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-10</span><span class="chapter-kicker">Comparación económica — ilustrativo</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-11</span><span class="chapter-kicker">Comparación económica — ilustrativo</span></div>
   <h2>¿Cuánto cuesta cada camino?</h2>
   <p class="lede">Tres escenarios reales. Las cifras son ilustrativas para un clúster de tamaño mediano — úsalas para entender la forma de los costos, no como cotización. Los números exactos dependen de negociación, volumen y región.</p>
   <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;">
@@ -514,9 +556,9 @@ ul.plain li{margin-bottom:5px;}
   <p class="small" style="margin-top:10px;">* CAPEX: hardware + cableado + rack. OPS: costo de ingenieros que operan la plataforma. En cloud el costo de operación es mínimo porque IBM se encarga del plano de control.</p>
 </div></div>
 
-<!-- ═══════ S11: STORAGE ═══════ -->
+<!-- ═══════ S12: STORAGE ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-11</span><span class="chapter-kicker">Infraestructura y persistencia</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-12</span><span class="chapter-kicker">Infraestructura y persistencia</span></div>
   <h2>¿Qué pasa con los datos cuando reciclan el contenedor?</h2>
   <p class="lede">Los pods son efímeros: se pueden reiniciar, mover o destruir en cualquier momento. Si tu app guarda datos dentro del contenedor, esos datos se pierden. Necesitas una bodega externa.</p>
   <div class="pod-stage">
@@ -538,9 +580,9 @@ ul.plain li{margin-bottom:5px;}
   <ul class="plain"><li>¿Las apps necesitan persistencia?</li><li>¿Requieren storage compartido entre pods?</li><li>¿Qué performance? IOPS, latencia, throughput.</li><li>¿El cliente ya tiene Dell, HPE, NetApp u otro storage? (CSI Drivers integran todos)</li><li>¿Se requiere backup, snapshot, replicación o DR?</li></ul>
 </div></div>
 
-<!-- ═══════ S12: VMs vs OPENSHIFT ═══════ -->
+<!-- ═══════ S13: VMs vs OPENSHIFT ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-12</span><span class="chapter-kicker">OpenShift vs lo que ya tienen</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-13</span><span class="chapter-kicker">OpenShift vs lo que ya tienen</span></div>
   <h2>Contenedores vs VMs: riesgos cubiertos</h2>
   <p class="lede">Muchos clientes en Ecuador viven en un modelo de VMs (VMware, Hyper-V). Esto es exactamente qué riesgos siguen abiertos con ese modelo y cómo los cubre OpenShift. Toca cada fila para ver el detalle.</p>
   <div style="background:var(--panel);border:1px solid var(--panel-line);border-radius:var(--radius);overflow:hidden;">
@@ -554,9 +596,9 @@ ul.plain li{margin-bottom:5px;}
   </div>
 </div></div>
 
-<!-- ═══════ S13: S2I DEMO ═══════ -->
+<!-- ═══════ S14: S2I DEMO ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-13</span><span class="chapter-kicker">Día 2 · El efecto WOW</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-14</span><span class="chapter-kicker">Día 2 · El efecto WOW</span></div>
   <h2>La demo que cierra el deal: S2I</h2>
   <p class="lede">Source-to-Image es el flujo nativo de OpenShift que construye una imagen de contenedor directamente desde el código fuente — sin escribir un Dockerfile.</p>
   <div class="analogy"><b>Analogía</b>Una máquina de empacado automático: metes la carga suelta (tu código) por un lado, y por el otro sale un contenedor estándar, sellado, listo para subir a cualquier barco. Nadie lo empacó a mano.</div>
@@ -574,9 +616,9 @@ ul.plain li{margin-bottom:5px;}
   </div>
 </div></div>
 
-<!-- ═══════ S14: ECOSISTEMA + DAYTWO ═══════ -->
+<!-- ═══════ S15: ECOSISTEMA + DAYTWO ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-14</span><span class="chapter-kicker">Modelo de colaboración</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-15</span><span class="chapter-kicker">Modelo de colaboración</span></div>
   <h2>El ecosistema gana-gana</h2>
   <p class="lede">Tres actores con roles distintos y complementarios. Ninguno compite con el otro. Toca cada pestaña.</p>
   <div class="eco-tabs" id="ecoTabs"></div>
@@ -593,9 +635,9 @@ ul.plain li{margin-bottom:5px;}
   </div>
 </div></div>
 
-<!-- ═══════ S15: RED FLAGS + CHECKLIST ═══════ -->
+<!-- ═══════ S16: RED FLAGS + CHECKLIST ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-15</span><span class="chapter-kicker">Escalada inteligente</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-16</span><span class="chapter-kicker">Escalada inteligente</span></div>
   <h2>¿Cuándo llamar a DayTwo?</h2>
   <p class="lede">Marca lo que el cliente ya te dijo en conversación real. El veredicto aparece abajo.</p>
   <div id="flagList"></div>
@@ -605,9 +647,9 @@ ul.plain li{margin-bottom:5px;}
   <div id="checkList"></div>
 </div></div>
 
-<!-- ═══════ S16: QUIZ ═══════ -->
+<!-- ═══════ S17: QUIZ ═══════ -->
 <div class="slide"><div class="wrap">
-  <div class="chapter-tag"><span class="chapter-id">CONT-16</span><span class="chapter-kicker">Última parada</span></div>
+  <div class="chapter-tag"><span class="chapter-id">CONT-17</span><span class="chapter-kicker">Última parada</span></div>
   <h2>Ponte a prueba</h2>
   <p class="lede">Cinco preguntas. Si las contestas bien, saliste sabiendo lo mismo que alguien que se sentó dos días en la capacitación.</p>
   <div class="quiz-score" id="quizScore">0 / 5 correctas</div>
@@ -629,16 +671,17 @@ const SLIDES = [
   {tag:'CONT-04', title:'¿Cuándo conviene OpenShift?'},
   {tag:'CONT-05', title:'Mapa de ediciones'},
   {tag:'CONT-06', title:'ROKS de cerca'},
-  {tag:'CONT-07', title:'Seguridad y redes'},
-  {tag:'CONT-08', title:'Instalación y arquitectura'},
-  {tag:'CONT-09', title:'Sizing: cuántos barcos'},
-  {tag:'CONT-10', title:'Comparación económica 3-vías'},
-  {tag:'CONT-11', title:'Storage y persistencia'},
-  {tag:'CONT-12', title:'OpenShift vs VMs'},
-  {tag:'CONT-13', title:'Demo S2I — el efecto WOW'},
-  {tag:'CONT-14', title:'Ecosistema + DayTwo'},
-  {tag:'CONT-15', title:'Red Flags y Checklist'},
-  {tag:'CONT-16', title:'Quiz final'},
+  {tag:'CONT-07', title:'ROKS vs VMware VKS'},
+  {tag:'CONT-08', title:'Seguridad y redes'},
+  {tag:'CONT-09', title:'Instalación y arquitectura'},
+  {tag:'CONT-10', title:'Sizing: cuántos barcos'},
+  {tag:'CONT-11', title:'Comparación económica 3-vías'},
+  {tag:'CONT-12', title:'Storage y persistencia'},
+  {tag:'CONT-13', title:'OpenShift vs VMs'},
+  {tag:'CONT-14', title:'Demo S2I — el efecto WOW'},
+  {tag:'CONT-15', title:'Ecosistema + DayTwo'},
+  {tag:'CONT-16', title:'Red Flags y Checklist'},
+  {tag:'CONT-17', title:'Quiz final'},
 ];
 
 const features = [
@@ -726,6 +769,18 @@ const archDetails = {
   infra:'<b>Nodos de Infraestructura (3 nodos):</b> Ingress, Registry, Monitoring, Logging. Se separan de los workers para que los servicios de plataforma no compitan con las aplicaciones reales del cliente.',
   wk:'<b>Nodos Worker (3+ nodos):</b> Aquí corren las aplicaciones reales. Crecen según aplicaciones, réplicas, CPU, memoria y tolerancia a fallos. Es el único grupo que típicamente sigue creciendo después del día 1.',
 };
+
+const vksRows = [
+  {c:'Modelo de licenciamiento', vm:'Incluido dentro de la licencia VCF — sin costo de licencia Kubernetes separado', ocp:'Licencia de OpenShift aparte, por nodo/core, sumada al consumo de IBM Cloud', d:'VKS no se cobra por separado si el cliente ya tiene VCF Enterprise/Advanced. Pero desde la adquisición por Broadcom, el precio del bundle VCF subió fuerte y muchos SKUs antiguos (a la carta) ya no existen — conviene verificar el contrato vigente del cliente antes de asumir que "ya lo tiene gratis".'},
+  {c:'Gestión del control plane', vm:'La administra el cliente dentro de su propio vCenter — el equipo de TI sigue siendo responsable de parches', ocp:'IBM gestiona el control plane completo: nodos master, parches y disponibilidad de la API', d:'Con VKS, aunque la integración con vSphere es nativa, el ciclo de vida (actualizar versión de Kubernetes, aplicar parches del Supervisor Cluster) sigue siendo tarea del equipo del cliente. Con ROKS, esa responsabilidad la asume IBM — exactamente el mismo argumento de "¿quién gestiona los parches?" de CONT-03.'},
+  {c:'Developer experience', vm:'Kubernetes estándar sobre vSphere — sin consola de desarrollador, sin S2I nativo', ocp:'Consola de desarrollador, S2I, Pipelines y GitOps integrados de fábrica', d:'VKS le da al cliente un clúster Kubernetes funcional, pero las herramientas de developer experience (build automático desde Git, catálogo visual de servicios, pipelines) hay que integrarlas aparte. OpenShift las trae de fábrica — esto es justo lo que genera el "efecto WOW" de la demo S2I.'},
+  {c:'Portabilidad / multi-cloud', vm:'Atado al ecosistema VMware/vSphere — corre donde haya vSphere licenciado', ocp:'La misma plataforma corre on-premise, en IBM Cloud, AWS, Azure o GCP (OCP, ROKS, ROSA, ARO)', d:'Si el cliente algún día quiere mover cargas fuera de su datacenter VMware, con VKS esa migración implica reescribir la capa de orquestación. Con OpenShift, el mismo manifiesto y la misma imagen corren en cualquier distribución — IBM Cloud hoy, otra nube mañana, sin reentrenar al equipo.'},
+  {c:'Seguridad y compliance', vm:'Seguridad estándar de Kubernetes (Pod Security Standards) — sin SCC ni Compliance Operator nativos', ocp:'SCC, Image Scanning automático y Compliance Operator (CIS, PCI-DSS, HIPAA) incluidos', d:'Para clientes regulados — banca, cooperativas, gobierno — el Compliance Operator de OpenShift genera reportes auditables sin trabajo manual. Con VKS, lograr el mismo nivel de cumplimiento normalmente requiere herramientas de terceros adicionales.'},
+  {c:'Soporte', vm:'Soporte de Broadcom/VMware sobre la capa de virtualización; el ecosistema extendido (Tanzu Mission Control) es addon con costo aparte', ocp:'SLA conjunto IBM + Red Hat, con todo el ecosistema OpenShift incluido en la suscripción', d:'ROKS es la única oferta donde dos proveedores enterprise — IBM y Red Hat — comparten la responsabilidad operativa bajo un mismo SLA. Con VKS, el soporte de Kubernetes en sí está incluido, pero las capacidades de gestión multi-clúster (Tanzu Mission Control) suelen ser una capa de costo adicional.'},
+  {c:'Riesgo de vendor lock-in', vm:'Alto — atado a VMware/Broadcom y a los aumentos de precio recientes de licenciamiento VCF', ocp:'Bajo — OpenShift es portable a cualquier infraestructura, reduce dependencia de un solo proveedor', d:'Este es el argumento más fuerte post-Broadcom: varios clientes ya están evaluando reducir su dependencia de VMware por los cambios de licenciamiento y precio. Posicionar OpenShift como alternativa con menor lock-in es relevante justo ahora.'},
+  {c:'Mejor para', vm:'Cliente que ya pagó VCF completo, quiere consolidar VMs y contenedores en la misma plataforma, sin necesidad de multi-cloud', ocp:'Cliente que prioriza soporte dedicado a Kubernetes, developer experience superior, compliance fuerte, o portabilidad fuera de VMware', d:'No es una decisión de "todo o nada" para la empresa completa — ver la herramienta de decisión más abajo para evaluarlo carga por carga.'},
+];
+
 
 const vmRows = [
   {c:'Tiempo de arranque', vm:'1–5 minutos (boot OS completo)', ocp:'Segundos (imagen de contenedor ya compilada)', d:'Una VM arranca un sistema operativo completo. Un contenedor corre un proceso sobre el kernel del nodo — ya está listo en segundos. Esto impacta directamente el tiempo de recuperación ante fallos.'},
@@ -928,7 +983,38 @@ document.querySelectorAll('.pick').forEach((el,i)=>{
   });
 });
 
-/* ═══════════════════════ S8 DEPLOY DECISION ═══════════════════════ */
+/* ═══════════════════════ S7 ROKS vs VKS ═══════════════════════ */
+const vksGrid=document.getElementById('vksGrid');
+vksGrid.innerHTML+=vksRows.map((r,i)=>`
+  <div class="vm-row" data-i="${i}">
+    <div class="vm-cell">${r.c}</div>
+    <div class="vm-cell vm-bad"><span class="vm-indicator"></span>${r.vm}</div>
+    <div class="vm-cell vm-good"><span class="vm-indicator"></span>${r.ocp}</div>
+    <div class="vm-detail">${r.d}</div>
+  </div>`).join('');
+document.querySelectorAll('#vksGrid .vm-row:not(.vm-header)').forEach(r=>{
+  r.addEventListener('click',()=>r.classList.toggle('open'));
+});
+
+let vksQ1=null,vksQ2=null;
+document.querySelectorAll('#vksDecisionBox .dopt').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll(`#vksDecisionBox .dopt[data-vq="${b.dataset.vq}"]`).forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+    if(b.dataset.vq==='1') vksQ1=b.dataset.vv; else vksQ2=b.dataset.vv;
+    const box=document.getElementById('vksResult');
+    if(!vksQ1||!vksQ2){ box.textContent='Responde las dos preguntas para ver la recomendación.'; return; }
+    if(vksQ1==='no'){
+      box.innerHTML='<b>Recomienda ROKS / OpenShift.</b> Si el cliente no tiene ya una licencia VCF completa pagada, no hay nada "gratis" que aprovechar — empieza la evaluación desde el soporte dedicado, developer experience y compliance que ofrece OpenShift, sin la carga de comparar contra algo que el cliente no posee.';
+    } else if(vksQ2==='no'){
+      box.innerHTML='<b>VKS es defendible aquí.</b> El cliente ya pagó VCF y no le preocupa la portabilidad — usar lo que ya tiene incluido es la decisión más razonable para esas cargas. Reserva el argumento de OpenShift para cuando aparezca una necesidad específica de compliance fuerte o soporte dedicado a Kubernetes que VKS no cubra bien.';
+    } else {
+      box.innerHTML='<b>Escenario híbrido — no es todo o nada.</b> Deja en VKS las cargas que ya corren cómodas en VMware y no necesitan moverse. Propón ROKS/OpenShift específicamente para las cargas nuevas, las que requieren compliance fuerte, o como cobertura ante el riesgo de lock-in y aumento de precios de Broadcom. Esto abre una conversación de dos productos en vez de un reemplazo total — más fácil de vender.';
+    }
+  });
+});
+
+/* ═══════════════════════ S9 DEPLOY DECISION ═══════════════════════ */
 let dq1=null,dq2=null;
 document.querySelectorAll('.dopt').forEach(b=>{
   b.addEventListener('click',()=>{
